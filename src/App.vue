@@ -1,22 +1,21 @@
 <script setup lang="ts">
-
+import NavBar from "./components/Dock.vue";
+import SearchBar from "./components/SearchBar.vue";
 </script>
 
 <template>
- <div>NavTab</div>
+  <div class="container">
+    <!-- <img src="./assets/images/bg.png" alt=""> -->
+    <SearchBar />
+    <NavBar />
+  </div>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./assets/images/bg.jpg");
+  background-size: cover;
 }
 </style>
