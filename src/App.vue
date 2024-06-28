@@ -13,8 +13,8 @@ import SearchBar from "./components/SearchBar.vue";
 
 <style scoped>
 .container {
-  width: 100vw;
   height: 100vh;
+  overflow: hidden;
   background-image: url("./assets/images/bg.jpg");
   background-size: cover;
 }
