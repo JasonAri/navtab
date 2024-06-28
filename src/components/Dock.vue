@@ -1,23 +1,21 @@
 <template>
-  <div>
-    <div class="dock">
-      <div class="dock-list">
-        <section class="icon-box">
-          <img src="../assets/images/icon.png" alt="icon" />
-        </section>
-        <section class="icon-box">
-          <img src="../assets/images/icon.png" alt="icon" />
-        </section>
-        <section class="icon-box">
-          <img src="../assets/images/icon.png" alt="icon" />
-        </section>
-        <section class="icon-box">
-          <img src="../assets/images/icon.png" alt="icon" />
-        </section>
-        <section class="icon-box">
-          <img src="../assets/images/icon.png" alt="icon" />
-        </section>
-      </div>
+  <div class="dock">
+    <div class="dock-list">
+      <section class="icon-box">
+        <img src="../assets/images/icon.png" alt="icon" />
+      </section>
+      <section class="icon-box">
+        <img src="../assets/images/icon.png" alt="icon" />
+      </section>
+      <section class="icon-box">
+        <img src="../assets/images/icon.png" alt="icon" />
+      </section>
+      <section class="icon-box">
+        <img src="../assets/images/icon.png" alt="icon" />
+      </section>
+      <section class="icon-box">
+        <img src="../assets/images/icon.png" alt="icon" />
+      </section>
     </div>
   </div>
 </template>
