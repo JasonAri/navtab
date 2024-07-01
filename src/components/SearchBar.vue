@@ -6,17 +6,39 @@
           <img src="../assets/images/icon-bing-48.png" alt="bing" />
         </section>
       </section>
-      <input class="search-input" type="text" placeholder="输入搜索内容" />
-      <section class="search-icon flex-center">
-        <section class="icon-box flex-center">
-          <img src="../assets/images/icon-search-50.png" alt="search" />
-        </section>
+      <Input
+        class="search-input"
+        placeholder="输入搜索内容"
+        v-model:value="searchValue"
+        v-on:press-enter="search"
+      />
+      <section class="clear-icon-box flex-center">
+        <CloseCircleFilled
+          v-show="searchValue"
+          class="clear-icon"
+          @click="clearInput"
+        />
       </section>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, watch } from "vue";
+import { Input } from "ant-design-vue";
+import { CloseCircleFilled } from "@ant-design/icons-vue";
+
+let searchValue = ref<string>("");
+
+function search() {
+  // https://cn.bing.com/search?q=%s
+  window.location.href = "https://cn.bing.com/search?q=" + searchValue.value;
+}
+
+function clearInput() {
+  searchValue.value = "";
+}
+</script>
 
 <style scoped lang="scss">
 .flex-center {
@@ -25,13 +47,13 @@
   justify-content: center;
 }
 .search-bar {
-  width: 580px;
+  width: 560px;
   height: 52px;
   background-color: rgb(255, 255, 255, 0.5);
   position: absolute;
-  top: 12vh;
+  top: 15vh;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   border-radius: 15px;
   display: flex;
   justify-content: space-between;
@@ -39,6 +61,7 @@
   .search-engine {
     width: 52px;
     height: 52px;
+    flex: none;
     .icon-box {
       width: 32px;
       height: 32px;
@@ -54,26 +77,19 @@
     }
   }
   .search-input {
-    flex: 1;
-    height: 32px;
     font-size: 16px;
+    font-family: "PingFang SC", "Microsoft Yahei", sans-serif;
     border: 0;
     outline: none;
-    background: transparent;
+    background: rgba(0, 0, 0, 0);
+    box-shadow: none;
   }
-  .search-icon {
+  .clear-icon-box {
     width: 52px;
     height: 52px;
-    .icon-box {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-
-      img {
-        width: 24px;
-        height: 24px;
-        display: block;
-      }
+    flex: none;
+    .clear-icon {
+      color: rgba(0, 0, 0, 0.4);
     }
   }
 }
