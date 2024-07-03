@@ -3,7 +3,7 @@
     <div class="search-bar">
       <section class="search-engine flex-center">
         <section class="icon-box flex-center">
-          <img src="../assets/images/icon-bing-48.png" alt="bing" />
+          <img src="/images/icon-bing-48.png" alt="bing" />
         </section>
       </section>
       <Input
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { Input } from "ant-design-vue";
 import { CloseCircleFilled } from "@ant-design/icons-vue";
 

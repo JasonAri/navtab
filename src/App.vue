@@ -5,7 +5,6 @@ import SearchBar from "./components/SearchBar.vue";
 
 <template>
   <div class="container">
-    <!-- <img src="./assets/images/bg.png" alt=""> -->
     <SearchBar />
     <NavBar />
   </div>
@@ -15,7 +14,7 @@ import SearchBar from "./components/SearchBar.vue";
 .container {
   height: 100vh;
   overflow: hidden;
-  background-image: url("./assets/images/bg.jpg");
+  background-image: url("/images/bg.jpg");
   background-size: cover;
 }
 </style>
