@@ -40,12 +40,11 @@ let navIconList: Array<NavIconObj> = [
     imgUrl: "icon-juejin.cn.svg",
     size: "38",
     href: "https://juejin.cn/",
-    bgColor: "#1e80ff",
   },
   {
     id: "004",
-    imgUrl: "icon-bilibili.com.ico",
-    size: "32",
+    imgUrl: "icon-bilibili.svg",
+    size: "48",
     href: "https://bilibili.com/",
   },
   {
