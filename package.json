@@ -1,12 +1,14 @@
 {
   "name": "navtab",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prerelease": "standard-version --release-as patch --dry-run",
+    "release": "standard-version"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
@@ -17,6 +19,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
     "sass": "^1.77.6",
+    "standard-version": "^9.5.0",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
     "vue-tsc": "^2.0.21"
