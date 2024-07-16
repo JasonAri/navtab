@@ -1,9 +1,11 @@
 {
   "git": {
+    "tagName": "v${version}",
     "commitMessage": "chore: release v${version}"
   },
   "github": {
-    "release": true
+    "release": true,
+    "releaseName":"NavTab ${version}"
   },
   "npm": {
     "publish": false
