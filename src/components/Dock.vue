@@ -8,80 +8,92 @@
         :size="item.size"
         :href="item.href"
         :bgColor="item.bgColor"
+        :title="item.title"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import NavIcon from "./NavIcon.vue";
+import NavIcon from './NavIcon.vue'
 interface NavIconObj {
-  id: string;
-  imgUrl: string;
-  size: string;
-  href: string;
-  bgColor?: string;
+  id: string
+  title: string
+  imgUrl: string
+  size: string
+  href: string
+  bgColor?: string
 }
 let navIconList: Array<NavIconObj> = [
   {
-    id: "001",
-    imgUrl: "icon-notion.svg",
-    size: "48",
-    href: "https://www.notion.so/",
+    id: '001',
+    title: 'notion',
+    imgUrl: 'icon-notion.svg',
+    size: '48',
+    href: 'https://www.notion.so/',
   },
   {
-    id: "002",
-    imgUrl: "icon-github.com.svg",
-    size: "38",
-    href: "https://github.com/",
+    id: '002',
+    title: 'github',
+    imgUrl: 'icon-github.com.svg',
+    size: '38',
+    href: 'https://github.com/',
   },
   {
-    id: "003",
-    imgUrl: "icon-juejin.cn.svg",
-    size: "38",
-    href: "https://juejin.cn/",
+    id: '003',
+    title: '掘金',
+    imgUrl: 'icon-juejin.cn.svg',
+    size: '38',
+    href: 'https://juejin.cn/',
   },
   {
-    id: "004",
-    imgUrl: "icon-bilibili.svg",
-    size: "48",
-    href: "https://bilibili.com/",
+    id: '004',
+    title: 'bilibili',
+    imgUrl: 'icon-bilibili.svg',
+    size: '48',
+    href: 'https://bilibili.com/',
   },
   {
-    id: "005",
-    imgUrl: "icon-agedm.org.ico",
-    size: "62",
-    href: "https://www.agedm.org/",
+    id: '005',
+    title: 'AGE动漫',
+    imgUrl: 'icon-agedm.org.ico',
+    size: '62',
+    href: 'https://www.agedm.org/',
   },
   {
-    id: "006",
-    imgUrl: "icon-aliyun.com.ico",
-    size: "32",
-    href: "https://account.aliyun.com/login/login.htm?oauth_callback=https%3A%2F%2Fwww.aliyun.com%2F%3Fspm%3D5176.12901015-2.0.0.21174b84rt9cr6",
+    id: '006',
+    title: '阿里云控制台',
+    imgUrl: 'icon-aliyun.com.ico',
+    size: '32',
+    href: 'https://account.aliyun.com/login/login.htm?oauth_callback=https%3A%2F%2Fwww.aliyun.com%2F%3Fspm%3D5176.12901015-2.0.0.21174b84rt9cr6',
   },
   {
-    id: "007",
-    imgUrl: "icon-bt.cn.ico",
-    size: "32",
-    href: "http://8.134.202.12:23135/d9f7593b",
+    id: '007',
+    title: '宝塔面板',
+    imgUrl: 'icon-bt.cn.ico',
+    size: '32',
+    href: 'http://8.134.202.12:23135/d9f7593b',
   },
   {
-    id: "008",
-    imgUrl: "icon-chatgpt.svg",
-    size: "42",
-    href: "https://chatgpt.com/?oai-dm=1",
+    id: '008',
+    title: 'ChatGPT',
+    imgUrl: 'icon-chatgpt.svg',
+    size: '42',
+    href: 'https://chatgpt.com/?oai-dm=1',
   },
   {
-    id: "009",
-    imgUrl: "icon-perplexity.svg",
-    size: "38",
-    href: "https://www.perplexity.ai/",
+    id: '009',
+    title: 'Perplexity',
+    imgUrl: 'icon-perplexity.svg',
+    size: '38',
+    href: 'https://www.perplexity.ai/',
   },
   {
-    id: "010",
-    imgUrl: "icon-tongyi.png",
-    size: "38",
-    href: "https://tongyi.aliyun.com/qianwen/",
+    id: '010',
+    title: '通义千问',
+    imgUrl: 'icon-tongyi.png',
+    size: '38',
+    href: 'https://tongyi.aliyun.com/qianwen/',
   },
   // {
   //   id: "999",
@@ -89,7 +101,7 @@ let navIconList: Array<NavIconObj> = [
   //   size: "32",
   //   href: "https://www.baidu.com",
   // },
-];
+]
 </script>
 
 <style scoped lang="scss">

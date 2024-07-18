@@ -1,17 +1,24 @@
 <template>
   <div>
-    <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">
-      <img
-        :src="`/images/${imgUrl}`"
-        :style="{ width: `${size}px`, height: `${size}px` }"
-        alt=""
-      />
-    </a>
+    <Tooltip :title="title">
+      <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">
+        <img
+          :src="`/images/${imgUrl}`"
+          :style="{ width: `${size}px`, height: `${size}px` }"
+          alt=""
+        />
+      </a>
+    </Tooltip>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Tooltip } from 'ant-design-vue'
 defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
   imgUrl: {
     type: String,
     required: true,
@@ -26,9 +33,9 @@ defineProps({
   },
   bgColor: {
     type: String,
-    default: "#fff",
+    default: '#fff',
   },
-});
+})
 
 // const props = withDefaults(defineProps<NavIcon>(), {
 //   src: "icon-add.png",
