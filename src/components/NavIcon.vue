@@ -1,19 +1,17 @@
 <template>
-  <div>
-    <Tooltip :title="title">
-      <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">
-        <img
-          :src="`/images/${imgUrl}`"
-          :style="{ width: `${size}px`, height: `${size}px` }"
-          alt=""
-        />
-      </a>
-    </Tooltip>
-  </div>
+  <NavTooltip :title="title">
+    <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">
+      <img
+        :src="`/images/${imgUrl}`"
+        :style="{ width: `${size}px`, height: `${size}px` }"
+        alt=""
+      />
+    </a>
+  </NavTooltip>
 </template>
 
 <script setup lang="ts">
-import { Tooltip } from 'ant-design-vue'
+import NavTooltip from './NavTooltip.vue'
 defineProps({
   title: {
     type: String,

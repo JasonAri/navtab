@@ -24,19 +24,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { Input } from "ant-design-vue";
-import { CloseCircleFilled } from "@ant-design/icons-vue";
+import { ref } from 'vue'
+import { Input } from 'ant-design-vue'
+import { CloseCircleFilled } from '@ant-design/icons-vue'
 
-let searchValue = ref<string>("");
+let searchValue = ref<string>('')
 
 function search() {
   // https://cn.bing.com/search?q=%s
-  window.location.href = "https://cn.bing.com/search?q=" + searchValue.value;
+  window.location.href = 'https://cn.bing.com/search?q=' + searchValue.value
 }
 
 function clearInput() {
-  searchValue.value = "";
+  searchValue.value = ''
 }
 </script>
 
@@ -78,7 +78,6 @@ function clearInput() {
   }
   .search-input {
     font-size: 16px;
-    font-family: "PingFang SC", "Microsoft Yahei", sans-serif;
     border: 0;
     outline: none;
     background: rgba(0, 0, 0, 0);
