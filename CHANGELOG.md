@@ -2,6 +2,13 @@
 
 
 
+## [0.2.0](https://github.com/JasonAri/navtab/compare/v0.1.0...v0.2.0) (2024-07-22)
+
+
+### Features
+
+* add tooltip for hovering the icon ([04bb139](https://github.com/JasonAri/navtab/commit/04bb1390b98297b427ff1c55c194c928694e50bd))
+
 ## 0.1.0 (2024-07-16)
 
 
