@@ -77,7 +77,10 @@ function clearInput() {
     }
   }
   .search-input {
+    color: #2d2e2e;
     font-size: 16px;
+    line-height: 16px;
+    font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei',sans-serif;
     border: 0;
     outline: none;
     background: rgba(0, 0, 0, 0);

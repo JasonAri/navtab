@@ -16,7 +16,8 @@ defineProps({
 
 <style lang="scss">
 .ant-tooltip-inner {
-  color: #000 !important;
-  line-height: 18px;
+  color: #2d2e2e !important;
+  font-size: 13px;
+  font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', sans-serif;
 }
 </style>
