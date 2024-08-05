@@ -11,7 +11,10 @@
         </FormItem>
         <FormItem class="form-item" name="password">
           <span class="text-tips">密码</span>
-          <Input class="form-input" v-model:value="formState.password" />
+          <InputPassword
+            class="form-input"
+            v-model:value="formState.password"
+          />
           <div class="div-line"></div>
         </FormItem>
         <FormItem class="btn-box">
@@ -20,11 +23,12 @@
       </Form>
     </div>
   </div>
+  <div class="overlay"></div>
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { Form, FormItem, Input, Button } from 'ant-design-vue'
+import { Form, FormItem, Input, Button, InputPassword } from 'ant-design-vue'
 
 interface FormState {
   username: string
@@ -49,6 +53,7 @@ const formState = reactive<FormState>({
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  z-index: 100;
 }
 .app-logo {
   width: 32px;
@@ -64,7 +69,7 @@ const formState = reactive<FormState>({
   font-size: 32px;
   font-weight: 700;
   margin: 20px 0 50px 0;
-  color: #d3caff;
+  color: #928cb1;
 }
 .text-tips {
   color: #9c9c9c;
@@ -93,5 +98,13 @@ const formState = reactive<FormState>({
       background-color: #545065;
     }
   }
+}
+.overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
 }
 </style>
