@@ -2,18 +2,12 @@
   <SettingFilled
     class="setting-btn"
     @click="handleSettingBtn"
-    id="settingLogoNode"
     ref="settingLogoRef"
   />
   <Transition name="fade">
-    <div
-      v-show="isShowMenu"
-      class="setting-menu"
-      id="settingMenuNode"
-      ref="settingMenuRef"
-    >
+    <div v-show="isShowMenu" class="setting-menu" ref="settingMenuRef">
       <div class="menu-list">
-        <span class="item-login" @click="handleLoginBtn">登录/注册</span>
+        <RouterLink class="item-login" to="/login">登录/注册</RouterLink>
       </div>
     </div>
   </Transition>
@@ -23,13 +17,6 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { SettingFilled } from '@ant-design/icons-vue'
 
-const props = defineProps({
-  showLoginPage: {
-    type: Function,
-    require: true
-  }
-})
-
 const isShowMenu = ref(false)
 const isClickOutsite = ref(false)
 const settingLogoRef: any = ref(null)
@@ -37,11 +24,6 @@ const settingMenuRef: any = ref(null)
 
 const handleSettingBtn = () => {
   isShowMenu.value = !isShowMenu.value
-}
-
-const handleLoginBtn = () => {
-  isShowMenu.value = false
-  props.showLoginPage?.()
 }
 
 const handleClick = (e: MouseEvent) => {
@@ -101,6 +83,7 @@ onBeforeUnmount(() => {
   padding: 5px 0;
   border-radius: 8px;
   color: #2d2e2e;
+  text-decoration: none;
   &:hover {
     background-color: #eaeaea;
   }

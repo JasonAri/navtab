@@ -1,34 +1,38 @@
 <template>
-  <div class="login-container">
-    <img class="app-logo" src="/images/icon-app-logo.png" />
-    <div class="left-box">
-      <div class="login-title">登录</div>
-      <Form class="login-form">
-        <FormItem class="form-item" name="username">
-          <span class="text-tips">用户名</span>
-          <Input class="form-input" v-model:value="formState.username" />
-          <div class="div-line"></div>
-        </FormItem>
-        <FormItem class="form-item" name="password">
-          <span class="text-tips">密码</span>
-          <InputPassword
-            class="form-input"
-            v-model:value="formState.password"
-          />
-          <div class="div-line"></div>
-        </FormItem>
-        <FormItem class="btn-box">
-          <Button class="btn" type="text">登录 / 注册</Button>
-        </FormItem>
-      </Form>
+  <div class="login-bg">
+    <div class="login-container">
+      <img class="app-logo" src="/images/icon-app-logo.png" />
+      <RouterLink to="/"><CloseOutlined class="close-icon" /></RouterLink>
+      <div class="left-box">
+        <div class="login-title">登录</div>
+        <Form class="login-form">
+          <FormItem class="form-item" name="username">
+            <span class="text-tips">用户名</span>
+            <Input class="form-input" v-model:value="formState.username" />
+            <div class="div-line"></div>
+          </FormItem>
+          <FormItem class="form-item" name="password">
+            <span class="text-tips">密码</span>
+            <InputPassword
+              class="form-input"
+              v-model:value="formState.password"
+            />
+            <div class="div-line"></div>
+          </FormItem>
+          <FormItem class="btn-box">
+            <Button class="btn" type="text">登录 / 注册</Button>
+          </FormItem>
+        </Form>
+      </div>
     </div>
+    <div class="overlay"></div>
   </div>
-  <div class="overlay"></div>
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { Form, FormItem, Input, Button, InputPassword } from 'ant-design-vue'
+import { CloseOutlined } from '@ant-design/icons-vue'
 
 interface FormState {
   username: string
@@ -41,6 +45,12 @@ const formState = reactive<FormState>({
 </script>
 
 <style scoped lang="scss">
+.login-bg {
+  height: 100vh;
+  overflow: hidden;
+  background-image: url('/images/bg.jpg');
+  background-size: cover;
+}
 .login-container {
   width: 800px;
   height: 450px;
@@ -59,6 +69,12 @@ const formState = reactive<FormState>({
   width: 32px;
   height: 32px;
   margin: 20px 25px 0 25px;
+}
+.close-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #928cb1;
 }
 .left-box {
   width: 300px;
