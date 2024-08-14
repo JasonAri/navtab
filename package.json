@@ -14,7 +14,8 @@
     "@ant-design/icons-vue": "^7.0.1",
     "@types/node": "^20.14.9",
     "ant-design-vue": "^4.2.3",
-    "vue": "^3.4.29"
+    "vue": "^3.4.29",
+    "vue-router": "^4.4.3"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^8.0.1",

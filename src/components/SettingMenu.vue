@@ -13,7 +13,7 @@
       ref="settingMenuRef"
     >
       <div class="menu-list">
-        <div class="item-login" @click="handleLoginBtn">登录/注册</div>
+        <span class="item-login" @click="handleLoginBtn">登录/注册</span>
       </div>
     </div>
   </Transition>
@@ -100,6 +100,7 @@ onBeforeUnmount(() => {
   text-align: center;
   padding: 5px 0;
   border-radius: 8px;
+  color: #2d2e2e;
   &:hover {
     background-color: #eaeaea;
   }
