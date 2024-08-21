@@ -3,27 +3,50 @@
     <div class="login-container">
       <RouterLink to="/"><CloseOutlined class="close-icon" /></RouterLink>
       <div class="left-box">
-        <div class="login-title">登录</div>
+        <div class="login-title">注册</div>
         <Form class="login-form">
-          <FormItem class="username-box" name="username">
-            <span class="text-tips">用户名</span>
-            <Input class="form-input" v-model:value="formState.username" />
+          <FormItem
+            class="username-box"
+            name="username"
+            :class="{
+              shake: usernameInputShake,
+              errtext: usernameInputErrText
+            }"
+          >
+            <div>
+              <span class="text-tips">用户名 {{ usernameTips }}</span>
+            </div>
+            <Input
+              class="form-input"
+              v-model:value="formState.username"
+              @blur="usernameInputErrText = false"
+            />
             <div class="div-line"></div>
           </FormItem>
-          <FormItem class="password-box" name="password">
-            <span class="text-tips">密码</span>
+          <FormItem
+            class="password-box"
+            name="password"
+            :class="{
+              shake: passwordInputShake,
+              errtext: passwordInputErrText
+            }"
+          >
+            <div>
+              <span class="text-tips">密码 {{ passwordTips }}</span>
+            </div>
             <InputPassword
               class="form-input"
               v-model:value="formState.password"
+              @blur="passwordInputErrText = false"
             />
             <div class="div-line"></div>
           </FormItem>
           <FormItem class="btn-box">
-            <Button class="btn" type="text">登录</Button>
+            <Button class="btn" type="text" @click="handleRegBtn">注册</Button>
           </FormItem>
         </Form>
         <div class="register">
-          <router-link to="/register">没有账号？去注册</router-link>
+          <router-link to="/login">已有账号？去登录</router-link>
         </div>
       </div>
     </div>
@@ -32,18 +55,58 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { Form, FormItem, Input, Button, InputPassword } from 'ant-design-vue'
+import { ref, reactive } from 'vue'
+import {
+  Form,
+  FormItem,
+  Input,
+  Button,
+  InputPassword,
+  message
+} from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 
 interface FormState {
   username: string
   password: string
 }
+
+const usernameTips = ref('')
+const passwordTips = ref('')
+const usernameInputShake = ref(false)
+const usernameInputErrText = ref(false)
+const passwordInputShake = ref(false)
+const passwordInputErrText = ref(false)
 const formState = reactive<FormState>({
   username: '',
   password: ''
 })
+
+const usernameReg = /^[a-zA-Z\u4e00-\u9fff][a-zA-Z\u4e00-\u9fff0-9]{2,14}$/
+const passwordReg = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&,.]{8,16}$/
+
+const handleRegBtn = () => {
+  if (!usernameReg.test(formState.username)) {
+    message.error('用户名应由3-15位英文或汉字组成')
+    usernameInputShake.value = true
+    usernameInputErrText.value = true
+    setTimeout(() => {
+      usernameInputShake.value = false
+    }, 1500)
+    return
+  }
+  if (!passwordReg.test(formState.password)) {
+    message.error('密码应由8-16位英文字母和数字组成')
+    passwordInputShake.value = true
+    passwordInputErrText.value = true
+    setTimeout(() => {
+      passwordInputShake.value = false
+    }, 1500)
+    return
+  }
+
+  // 注册功能
+}
 </script>
 
 <style scoped lang="scss">
@@ -111,6 +174,7 @@ const formState = reactive<FormState>({
   box-shadow: none;
 }
 .div-line {
+  width: 300px;
   border-bottom: 1px solid #cfcfcf;
 }
 .btn-box {
@@ -144,5 +208,36 @@ const formState = reactive<FormState>({
   backdrop-filter: blur(10px);
   background: rgba(0, 0, 0, 0.5);
   z-index: 99;
+}
+.errtext {
+  span,
+  input {
+    color: red;
+  }
+  .div-line {
+    border-bottom: 1px solid red;
+  }
+}
+.shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
 }
 </style>
