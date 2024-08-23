@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const request = axios.create({
-  baseURL: 'http://127.0.0.1',
+  baseURL: import.meta.env.VITE_APP_PROXY_API,
   headers: {
     'Content-Type': 'application/json'
   },
@@ -17,7 +17,6 @@ request.interceptors.response.use(
   (response) => {
     try {
       const { code, message, data } = response.data
-      console.log(response.data)
       switch (code) {
         case 200:
           return data

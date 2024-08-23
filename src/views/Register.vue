@@ -65,6 +65,7 @@ import {
   message
 } from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
+import { registerApi } from '../api/login'
 
 interface FormState {
   username: string
@@ -85,7 +86,7 @@ const formState = reactive<FormState>({
 const usernameReg = /^[a-zA-Z\u4e00-\u9fff][a-zA-Z\u4e00-\u9fff0-9]{2,14}$/
 const passwordReg = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&,.]{8,16}$/
 
-const handleRegBtn = () => {
+const handleRegBtn = async () => {
   if (!usernameReg.test(formState.username)) {
     message.error('用户名应由3-15位英文或汉字组成')
     usernameInputShake.value = true
@@ -106,6 +107,16 @@ const handleRegBtn = () => {
   }
 
   // 注册功能
+  const resultData = await registerApi({
+    username: 'Jason1',
+    password: 'jason404'
+  })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      // console.log(err)
+    })
 }
 </script>
 

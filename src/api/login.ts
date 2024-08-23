@@ -5,7 +5,7 @@ interface RegisterRequestData {
   password: string
 }
 
-export function register(data:RegisterRequestData) {
+export function registerApi(data: RegisterRequestData) {
   return request({
     url: '/register',
     method: 'post',
