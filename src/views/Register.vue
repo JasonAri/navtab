@@ -42,7 +42,13 @@
             <div class="div-line"></div>
           </FormItem>
           <FormItem class="btn-box">
-            <Button class="btn" type="text" @click="handleRegBtn">注册</Button>
+            <Button
+              class="btn"
+              type="text"
+              @click="handleRegBtn"
+              :loading="regBtnLoading"
+              >注册</Button
+            >
           </FormItem>
         </Form>
         <div class="register">
@@ -56,6 +62,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   Form,
   FormItem,
@@ -72,12 +79,14 @@ interface FormState {
   password: string
 }
 
+const router = useRouter()
 const usernameTips = ref('')
 const passwordTips = ref('')
 const usernameInputShake = ref(false)
 const usernameInputErrText = ref(false)
 const passwordInputShake = ref(false)
 const passwordInputErrText = ref(false)
+const regBtnLoading = ref(false)
 const formState = reactive<FormState>({
   username: '',
   password: ''
@@ -87,10 +96,14 @@ const usernameReg = /^[a-zA-Z\u4e00-\u9fff][a-zA-Z\u4e00-\u9fff0-9]{2,14}$/
 const passwordReg = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&,.]{8,16}$/
 
 const handleRegBtn = async () => {
+  // button loading
+  regBtnLoading.value = true
+
   if (!usernameReg.test(formState.username)) {
     message.error('用户名应由3-15位英文或汉字组成')
     usernameInputShake.value = true
     usernameInputErrText.value = true
+    regBtnLoading.value = false
     setTimeout(() => {
       usernameInputShake.value = false
     }, 1500)
@@ -100,22 +113,35 @@ const handleRegBtn = async () => {
     message.error('密码应由8-16位英文字母和数字组成')
     passwordInputShake.value = true
     passwordInputErrText.value = true
+    regBtnLoading.value = false
     setTimeout(() => {
       passwordInputShake.value = false
     }, 1500)
     return
   }
 
-  // 注册功能
+  const { username, password } = formState
   const resultData = await registerApi({
-    username: 'Jason1',
-    password: 'jason404'
+    username,
+    password
   })
     .then((res) => {
       console.log(res)
+      message.success('注册成功,自动登录中...')
+      setTimeout(() => {
+        regBtnLoading.value = false
+        router.push('/')
+      }, 1500)
     })
     .catch((err) => {
-      // console.log(err)
+      console.log(err.response.data)
+      const resMsgStr = err.response.data.message
+      if (resMsgStr.indexOf('Duplicate entry')) {
+        message.error('注册失败: 用户名已存在！')
+      } else {
+        message.error('注册失败，请稍后再试！')
+      }
+      regBtnLoading.value = false
     })
 }
 </script>
