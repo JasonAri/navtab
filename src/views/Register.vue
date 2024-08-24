@@ -73,6 +73,7 @@ import {
 } from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { registerApi } from '../api/login'
+import useRegexp from '../hooks/useRegexp'
 
 interface FormState {
   username: string
@@ -92,34 +93,39 @@ const formState = reactive<FormState>({
   password: ''
 })
 
-const usernameReg = /^[a-zA-Z\u4e00-\u9fff][a-zA-Z\u4e00-\u9fff0-9]{2,14}$/
-const passwordReg = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&,.]{8,16}$/
-
 const handleRegBtn = async () => {
   // button loading
   regBtnLoading.value = true
 
-  if (!usernameReg.test(formState.username)) {
-    message.error('用户名应由3-15位英文或汉字组成')
-    usernameInputShake.value = true
-    usernameInputErrText.value = true
-    regBtnLoading.value = false
-    setTimeout(() => {
-      usernameInputShake.value = false
-    }, 1500)
-    return
-  }
-  if (!passwordReg.test(formState.password)) {
-    message.error('密码应由8-16位英文字母和数字组成')
-    passwordInputShake.value = true
-    passwordInputErrText.value = true
-    regBtnLoading.value = false
-    setTimeout(() => {
-      passwordInputShake.value = false
-    }, 1500)
-    return
-  }
+  await useRegexp(formState)
+    .then((res: string) => {
+      console.log(res)
+      registerRequest()
+    })
+    .catch((err: { reason: string }) => {
+      console.log(err.reason)
+      if (err.reason === 'username') {
+        usernameInputShake.value = true
+        usernameInputErrText.value = true
+        regBtnLoading.value = false
+        setTimeout(() => {
+          usernameInputShake.value = false
+        }, 1500)
+        return
+      }
+      if (err.reason === 'password') {
+        passwordInputShake.value = true
+        passwordInputErrText.value = true
+        regBtnLoading.value = false
+        setTimeout(() => {
+          passwordInputShake.value = false
+        }, 1500)
+        return
+      }
+    })
+}
 
+const registerRequest = async () => {
   const { username, password } = formState
   const resultData = await registerApi({
     username,
