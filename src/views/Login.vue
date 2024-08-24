@@ -19,7 +19,12 @@
             <div class="div-line"></div>
           </FormItem>
           <FormItem class="btn-box">
-            <Button class="btn" type="text" @click="handleLoginBtn">
+            <Button
+              class="btn"
+              type="text"
+              @click="handleLoginBtn"
+              :loading="loginBtnLoading"
+            >
               登录
             </Button>
           </FormItem>
@@ -34,21 +39,67 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { Form, FormItem, Input, Button, InputPassword } from 'ant-design-vue'
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import {
+  Form,
+  FormItem,
+  Input,
+  Button,
+  InputPassword,
+  message
+} from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import useRegexp from '../hooks/useRegexp'
+import { loginApi } from '../api/login'
 
 interface FormState {
   username: string
   password: string
 }
+
+const router = useRouter()
+const loginBtnLoading = ref(false)
 const formState = reactive<FormState>({
   username: '',
   password: ''
 })
 
-const handleLoginBtn = () => {}
+const handleLoginBtn = async () => {
+  loginBtnLoading.value = true
+
+  await useRegexp(formState)
+    .then((res) => {
+      // console.log(res)
+      loginRequest()
+    })
+    .catch((err) => {
+      // console.log(err)
+      message.error('用户名或密码不正确！请重新输入')
+      loginBtnLoading.value = false
+    })
+}
+
+const loginRequest = async () => {
+  const { username, password } = formState
+  const resultData = await loginApi({ username, password })
+    .then((res) => {
+      console.log(res)
+      message.success('登录成功!')
+      loginBtnLoading.value = false
+      router.push('/')
+    })
+    .catch((err) => {
+      console.log(err.response.data)
+      const resMsgStr = err.response.data.message
+      if (resMsgStr.indexOf('Wrong password')) {
+        message.error('用户名或密码不正确！请重新输入')
+      } else {
+        message.error('登录失败，请稍后再试！')
+      }
+      loginBtnLoading.value = false
+    })
+}
 </script>
 
 <style scoped lang="scss">

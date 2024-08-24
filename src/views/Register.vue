@@ -100,12 +100,13 @@ const handleRegBtn = async () => {
 
   await useRegexp(formState)
     .then((res: string) => {
-      console.log(res)
+      // console.log(res)
       registerRequest()
     })
     .catch((err: { reason: string }) => {
-      console.log(err.reason)
+      // console.log(err.reason)
       if (err.reason === 'username') {
+        message.error('用户名应由3-15位英文或汉字组成')
         usernameInputShake.value = true
         usernameInputErrText.value = true
         regBtnLoading.value = false
@@ -115,6 +116,7 @@ const handleRegBtn = async () => {
         return
       }
       if (err.reason === 'password') {
+        message.error('密码应由8-16位英文字母和数字组成')
         passwordInputShake.value = true
         passwordInputErrText.value = true
         regBtnLoading.value = false
