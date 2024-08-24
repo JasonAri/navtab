@@ -19,7 +19,9 @@
             <div class="div-line"></div>
           </FormItem>
           <FormItem class="btn-box">
-            <Button class="btn" type="text">登录</Button>
+            <Button class="btn" type="text" @click="handleLoginBtn">
+              登录
+            </Button>
           </FormItem>
         </Form>
         <div class="register">
@@ -35,6 +37,7 @@
 import { reactive } from 'vue'
 import { Form, FormItem, Input, Button, InputPassword } from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
+import useRegexp from '../hooks/useRegexp'
 
 interface FormState {
   username: string
@@ -44,6 +47,8 @@ const formState = reactive<FormState>({
   username: '',
   password: ''
 })
+
+const handleLoginBtn = () => {}
 </script>
 
 <style scoped lang="scss">

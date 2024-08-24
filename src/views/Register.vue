@@ -47,8 +47,9 @@
               type="text"
               @click="handleRegBtn"
               :loading="regBtnLoading"
-              >注册</Button
             >
+              注册
+            </Button>
           </FormItem>
         </Form>
         <div class="register">

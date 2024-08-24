@@ -15,5 +15,6 @@
       "files": ".prettierrc",
       "options": { "parser": "json" }
     }
-  ]
+  ],
+  "htmlWhitespaceSensitivity": "ignore"
 }
