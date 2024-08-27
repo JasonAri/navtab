@@ -104,12 +104,12 @@ const handleRegBtn = async () => {
       registerRequest()
     })
     .catch((err: { reason: string }) => {
+      regBtnLoading.value = false
       // console.log(err.reason)
       if (err.reason === 'username') {
         message.error('用户名应由3-15位英文或汉字组成')
         usernameInputShake.value = true
         usernameInputErrText.value = true
-        regBtnLoading.value = false
         setTimeout(() => {
           usernameInputShake.value = false
         }, 1500)
@@ -119,12 +119,12 @@ const handleRegBtn = async () => {
         message.error('密码应由8-16位英文字母和数字组成')
         passwordInputShake.value = true
         passwordInputErrText.value = true
-        regBtnLoading.value = false
         setTimeout(() => {
           passwordInputShake.value = false
         }, 1500)
         return
       }
+      message.error('注册失败，请稍后再试！')
     })
 }
 
@@ -144,13 +144,13 @@ const registerRequest = async () => {
     })
     .catch((err) => {
       console.log(err.response.data)
+      regBtnLoading.value = false
       const resMsgStr = err.response.data.message
-      if (resMsgStr.indexOf('Duplicate entry')) {
+      if (resMsgStr?.indexOf('Duplicate entry')) {
         message.error('注册失败: 用户名已存在！')
       } else {
         message.error('注册失败，请稍后再试！')
       }
-      regBtnLoading.value = false
     })
 }
 </script>
