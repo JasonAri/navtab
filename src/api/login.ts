@@ -20,3 +20,10 @@ export function loginApi(data: userData) {
     data
   })
 }
+
+export function getBookmarkListApi() {
+  return request({
+    url: '/user/getBookmarkList',
+    method: 'get'
+  })
+}

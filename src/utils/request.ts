@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from './tools'
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_APP_PROXY_API,
@@ -9,17 +10,23 @@ const request = axios.create({
 })
 
 request.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    const token = getToken()
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
+    return config
+  },
   (error) => Promise.reject(error)
 )
 
 request.interceptors.response.use(
   (response) => {
     try {
-      const { code, message, data } = response.data
+      const { code, message } = response.data
       switch (code) {
         case 200:
-          return data
+          return response.data
         default:
           return Promise.reject(new Error(code + message))
       }

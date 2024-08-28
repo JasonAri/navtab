@@ -52,6 +52,7 @@ import {
 import { CloseOutlined } from '@ant-design/icons-vue'
 import useRegexp from '../hooks/useRegexp'
 import { loginApi } from '../api/login'
+import { setToken } from '../utils/tools'
 
 interface FormState {
   username: string
@@ -69,12 +70,10 @@ const handleLoginBtn = async () => {
   loginBtnLoading.value = true
 
   await useRegexp(formState)
-    .then((res) => {
-      // console.log(res)
+    .then(() => {
       loginRequest()
     })
-    .catch((err) => {
-      // console.log(err)
+    .catch(() => {
       message.error('用户名或密码不正确！请重新输入')
       loginBtnLoading.value = false
     })
@@ -82,15 +81,16 @@ const handleLoginBtn = async () => {
 
 const loginRequest = async () => {
   const { username, password } = formState
-  const resultData = await loginApi({ username, password })
+  await loginApi({ username, password })
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       message.success('登录成功!')
       loginBtnLoading.value = false
+      setToken(res.data.token)
       router.push('/')
     })
     .catch((err) => {
-      console.log(err.response.data)
+      // console.log(err.response.data)
       const resMsgStr = err.response.data.message
       if (resMsgStr.indexOf('Wrong password')) {
         message.error('用户名或密码不正确！请重新输入')
