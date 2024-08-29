@@ -1,34 +1,16 @@
 import request from '../utils/request'
+import { ReqUserData, ResToken, ResBookmarkList } from './types/user'
 
-interface UserData {
-  username: string
-  password: string
+export function loginApi(data: ReqUserData) {
+  return request<ResToken>({ url: '/user/login', method: 'post', data })
 }
 
-interface ResData {
-  code: number
-  data: object
-  message: string
+export function registerApi(data: ReqUserData) {
+  return request<ResToken>({ url: '/user/register', method: 'post', data })
 }
 
-export function registerApi(data: UserData) {
-  return request<ResData>({
-    url: '/user/register',
-    method: 'post',
-    data
-  })
-}
-
-export function loginApi(data: UserData) {
-  return request<ResData>({
-    url: '/user/login',
-    method: 'post',
-    data
-  })
-}
-
-export function getBookmarkListApi() {
-  return request<ResData>({
+export function getBookmarkListApi<T>() {
+  return request<ResBookmarkList<T>>({
     url: '/user/getBookmarkList',
     method: 'get'
   })

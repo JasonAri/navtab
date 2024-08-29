@@ -75,6 +75,7 @@ import {
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { registerApi } from '../api/user'
 import useRegexp from '../hooks/useRegexp'
+import { setToken } from '../utils/tools'
 
 interface FormState {
   username: string
@@ -99,7 +100,7 @@ const handleRegBtn = async () => {
   regBtnLoading.value = true
 
   await useRegexp(formState)
-    .then((res: string) => {
+    .then((res) => {
       // console.log(res)
       registerRequest()
     })
@@ -130,13 +131,14 @@ const handleRegBtn = async () => {
 
 const registerRequest = async () => {
   const { username, password } = formState
-  const resultData = await registerApi({
+  await registerApi({
     username,
     password
   })
     .then((res) => {
       console.log(res)
       message.success('注册成功,自动登录中...')
+      setToken(res.data.token)
       setTimeout(() => {
         regBtnLoading.value = false
         router.push('/')

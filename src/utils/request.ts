@@ -1,5 +1,16 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig
+} from 'axios'
 import { getToken } from './tools'
+
+export interface ApiResponse<T> {
+  code: number
+  data: T
+  message: string
+}
 
 const service: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_APP_PROXY_API,
@@ -8,7 +19,7 @@ const service: AxiosInstance = axios.create({
 })
 
 service.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     const token = getToken()
     config.headers.Authorization = token ? `Bearer ${token}` : undefined
     return config
@@ -18,11 +29,16 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response: AxiosResponse) => {
-    return response.data
+    return response
   },
   (error: AxiosError) => {
     return Promise.reject(error)
   }
 )
 
-export default service
+// request
+export default async function request<T>(config: any): Promise<ApiResponse<T>> {
+  return service(config)
+    .then((res: AxiosResponse<ApiResponse<T>>) => res.data)
+    .catch((error) => Promise.reject(error))
+}

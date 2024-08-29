@@ -61,7 +61,7 @@ let navIconList: Array<Bookmarks> = reactive([
 ])
 
 const getUserBookmarkList = () => {
-  getBookmarkListApi()
+  getBookmarkListApi<Bookmarks>()
     .then((res) => {
       console.log(res)
       Object.assign(navIconList, res.data.bookmarkList)
