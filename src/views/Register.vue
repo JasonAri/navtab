@@ -73,7 +73,7 @@ import {
   message
 } from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
-import { registerApi } from '../api/login'
+import { registerApi } from '../api/user'
 import useRegexp from '../hooks/useRegexp'
 
 interface FormState {

@@ -1,42 +1,28 @@
-import axios from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import { getToken } from './tools'
 
-const request = axios.create({
+const service: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_APP_PROXY_API,
-  headers: {
-    'Content-Type': 'application/json'
-  },
+  headers: { 'Content-Type': 'application/json' },
   timeout: 5000
 })
 
-request.interceptors.request.use(
+service.interceptors.request.use(
   (config) => {
     const token = getToken()
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`
-    }
+    config.headers.Authorization = token ? `Bearer ${token}` : undefined
     return config
   },
-  (error) => Promise.reject(error)
+  (error: AxiosError) => Promise.reject(error)
 )
 
-request.interceptors.response.use(
-  (response) => {
-    try {
-      const { code, message } = response.data
-      switch (code) {
-        case 200:
-          return response.data
-        default:
-          return Promise.reject(new Error(code + message))
-      }
-    } catch (error) {
-      return Promise.reject(new Error((error as Error).message))
-    }
+service.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response.data
   },
-  (error) => {
+  (error: AxiosError) => {
     return Promise.reject(error)
   }
 )
 
-export default request
+export default service

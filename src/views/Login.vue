@@ -51,7 +51,7 @@ import {
 } from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import useRegexp from '../hooks/useRegexp'
-import { loginApi } from '../api/login'
+import { loginApi } from '../api/user'
 import { setToken } from '../utils/tools'
 
 interface FormState {

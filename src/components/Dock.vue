@@ -17,10 +17,10 @@
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue'
 import NavIcon from './NavIcon.vue'
-import { getBookmarkListApi } from '../api/login'
+import { getBookmarkListApi } from '../api/user'
 import { getToken } from '../utils/tools'
 
-interface NavIconObj {
+interface Bookmarks {
   id: number
   title: string
   imgUrl: string
@@ -29,7 +29,7 @@ interface NavIconObj {
   bgColor?: string
 }
 
-let navIconList: Array<NavIconObj> = reactive([
+let navIconList: Array<Bookmarks> = reactive([
   {
     id: 0,
     title: 'notion',
@@ -76,79 +76,6 @@ onMounted(() => {
     getUserBookmarkList()
   }
 })
-
-// let navIconList: Array<NavIconObj> = [
-//   {
-//     id: 0,
-//     title: 'notion',
-//     imgUrl: 'icon-notion.svg',
-//     size: '48',
-//     href: 'https://www.notion.so/'
-//   },
-//   {
-//     id: 1,
-//     title: 'github',
-//     imgUrl: 'icon-github.com.svg',
-//     size: '38',
-//     href: 'https://github.com/'
-//   },
-//   {
-//     id: 2,
-//     title: '掘金',
-//     imgUrl: 'icon-juejin.cn.svg',
-//     size: '38',
-//     href: 'https://juejin.cn/'
-//   },
-//   {
-//     id: 3,
-//     title: 'bilibili',
-//     imgUrl: 'icon-bilibili.svg',
-//     size: '48',
-//     href: 'https://bilibili.com/'
-//   },
-//   {
-//     id: 4,
-//     title: 'AGE动漫',
-//     imgUrl: 'icon-agedm.org.ico',
-//     size: '62',
-//     href: 'https://www.agedm.org/'
-//   },
-//   {
-//     id: 5,
-//     title: '阿里云控制台',
-//     imgUrl: 'icon-aliyun.com.ico',
-//     size: '32',
-//     href: 'https://account.aliyun.com/login/login.htm?oauth_callback=https%3A%2F%2Fwww.aliyun.com%2F%3Fspm%3D5176.12901015-2.0.0.21174b84rt9cr6'
-//   },
-//   {
-//     id: 6,
-//     title: '宝塔面板',
-//     imgUrl: 'icon-bt.cn.ico',
-//     size: '32',
-//     href: 'http://8.134.202.12:23135/d9f7593b'
-//   },
-//   {
-//     id: 7,
-//     title: 'ChatGPT',
-//     imgUrl: 'icon-chatgpt.svg',
-//     size: '42',
-//     href: 'https://chatgpt.com/?oai-dm=1'
-//   },
-//   {
-//     id: 8,
-//     title: 'Perplexity',
-//     imgUrl: 'icon-perplexity.svg',
-//     size: '38',
-//     href: 'https://www.perplexity.ai/'
-//   },
-//   {
-//     id: 9,
-//     title: '通义千问',
-//     imgUrl: 'icon-tongyi.png',
-//     size: '38',
-//     href: 'https://tongyi.aliyun.com/qianwen/'
-//   }
-// ]
 </script>
 
 <style scoped lang="scss">
