@@ -7,7 +7,10 @@
   <Transition name="fade">
     <div v-show="isShowMenu" class="setting-menu" ref="settingMenuRef">
       <div class="menu-list">
-        <RouterLink class="item-login" to="/login">登录/注册</RouterLink>
+        <RouterLink class="item-login" to="/login" v-if="!isLogin">
+          登录/注册
+        </RouterLink>
+        <a class="item-login" @click="handleLogout" v-if="isLogin">退出登录</a>
       </div>
     </div>
   </Transition>
@@ -16,14 +19,21 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { SettingFilled } from '@ant-design/icons-vue'
+import { getToken, removeToken } from '../utils/tools'
 
 const isShowMenu = ref(false)
 const isClickOutsite = ref(false)
 const settingLogoRef: any = ref(null)
 const settingMenuRef: any = ref(null)
+const isLogin: boolean = ref(false)
 
 const handleSettingBtn = () => {
   isShowMenu.value = !isShowMenu.value
+}
+
+const handleLogout = () => {
+  removeToken()
+  isLogin.value = false
 }
 
 const handleClick = (e: MouseEvent) => {
@@ -42,6 +52,9 @@ watch(isClickOutsite, () => {
 })
 
 onMounted(() => {
+  if (getToken()) {
+    isLogin.value = true
+  }
   document.addEventListener('click', handleClick)
 })
 

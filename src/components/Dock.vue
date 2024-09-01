@@ -63,12 +63,16 @@ let navIconList: Array<Bookmarks> = reactive([
 const getUserBookmarkList = () => {
   getBookmarkListApi<Bookmarks>()
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       Object.assign(navIconList, res.data.bookmarkList)
     })
     .catch((err) => {
       console.warn(err)
     })
+}
+
+const resetUserBookmarkList=()=>{
+  Object.assign(navIconList,)
 }
 
 onMounted(() => {
