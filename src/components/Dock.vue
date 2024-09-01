@@ -2,7 +2,7 @@
   <div class="dock">
     <div class="dock-list">
       <NavIcon
-        v-for="item in navIconList"
+        v-for="item in bookmarkList"
         :key="item.id"
         :imgUrl="item.imgUrl"
         :size="item.size"
@@ -15,7 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
 import { getBookmarkListApi } from '../api/user'
 import { getToken } from '../utils/tools'
@@ -29,55 +31,27 @@ interface Bookmarks {
   bgColor?: string
 }
 
-let navIconList: Array<Bookmarks> = reactive([
-  {
-    id: 0,
-    title: 'notion',
-    imgUrl: 'icon-notion.svg',
-    size: '48',
-    href: 'https://www.notion.so/'
-  },
-  {
-    id: 1,
-    title: 'github',
-    imgUrl: 'icon-github.com.svg',
-    size: '38',
-    href: 'https://github.com/'
-  },
-  {
-    id: 2,
-    title: '掘金',
-    imgUrl: 'icon-juejin.cn.svg',
-    size: '38',
-    href: 'https://juejin.cn/'
-  },
-  {
-    id: 3,
-    title: 'bilibili',
-    imgUrl: 'icon-bilibili.svg',
-    size: '48',
-    href: 'https://bilibili.com/'
-  }
-])
+const bookmarkStore = useBookmarkStore()
+const { bookmarkList } = storeToRefs(bookmarkStore)
+const { updateBookmarkList, resetBookmarkList } = bookmarkStore
 
 const getUserBookmarkList = () => {
   getBookmarkListApi<Bookmarks>()
     .then((res) => {
       // console.log(res)
-      Object.assign(navIconList, res.data.bookmarkList)
+      // Object.assign(navIconList, res.data.bookmarkList)
+      updateBookmarkList(res.data.bookmarkList)
     })
     .catch((err) => {
       console.warn(err)
     })
 }
 
-const resetUserBookmarkList=()=>{
-  Object.assign(navIconList,)
-}
-
 onMounted(() => {
   if (getToken()) {
     getUserBookmarkList()
+  } else {
+    resetBookmarkList()
   }
 })
 </script>

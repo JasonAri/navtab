@@ -20,12 +20,16 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { SettingFilled } from '@ant-design/icons-vue'
 import { getToken, removeToken } from '../utils/tools'
+import { useBookmarkStore } from '../store/bookmark'
 
 const isShowMenu = ref(false)
 const isClickOutsite = ref(false)
 const settingLogoRef: any = ref(null)
 const settingMenuRef: any = ref(null)
-const isLogin: boolean = ref(false)
+const isLogin = ref(false)
+
+const bookmarkStore = useBookmarkStore()
+const { resetBookmarkList } = bookmarkStore
 
 const handleSettingBtn = () => {
   isShowMenu.value = !isShowMenu.value
@@ -34,6 +38,7 @@ const handleSettingBtn = () => {
 const handleLogout = () => {
   removeToken()
   isLogin.value = false
+  resetBookmarkList()
 }
 
 const handleClick = (e: MouseEvent) => {
