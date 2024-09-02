@@ -20,7 +20,7 @@ import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
 import { getBookmarkListApi } from '../api/user'
-import { getToken } from '../utils/tools'
+import { getToken, removeToken } from '../utils/tools'
 
 interface Bookmarks {
   id: number
@@ -39,11 +39,14 @@ const getUserBookmarkList = () => {
   getBookmarkListApi<Bookmarks>()
     .then((res) => {
       // console.log(res)
-      // Object.assign(navIconList, res.data.bookmarkList)
       updateBookmarkList(res.data.bookmarkList)
     })
     .catch((err) => {
       console.warn(err)
+      if (err.response.data.message == 'Invalid token') {
+        removeToken()
+        resetBookmarkList()
+      }
     })
 }
 
