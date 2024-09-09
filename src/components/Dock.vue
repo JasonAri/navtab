@@ -43,7 +43,7 @@ const getUserBookmarkList = async () => {
       updateBookmarkList(res.data.bookmarkList)
     })
     .catch((err) => {
-      console.error(err)
+      console.error('Failed to get bookmark list', err)
       message.warn('登录状态已过期，请重新登录')
       removeTokens()
       resetBookmarkList()

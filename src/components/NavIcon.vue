@@ -15,24 +15,24 @@ import NavTooltip from './NavTooltip.vue'
 defineProps({
   title: {
     type: String,
-    required: true,
+    required: true
   },
   imgUrl: {
     type: String,
-    required: true,
+    required: true
   },
   size: {
     type: String,
-    required: true,
+    required: true
   },
   href: {
     type: String,
-    required: true,
+    required: true
   },
   bgColor: {
     type: String,
-    default: '#fff',
-  },
+    default: '#fff'
+  }
 })
 
 // const props = withDefaults(defineProps<NavIcon>(), {
