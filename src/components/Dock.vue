@@ -1,6 +1,6 @@
 <template>
   <div class="dock">
-    <div class="dock-list">
+    <div class="dock-list" ref="el">
       <NavIcon
         v-for="item in bookmarkList"
         :key="item.id"
@@ -15,13 +15,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
 import { getBookmarkListApi } from '../api/user'
 import { getAccessToken, removeTokens } from '../utils/tools'
 import { message } from 'ant-design-vue'
+import { useDraggable } from 'vue-draggable-plus'
 
 interface Bookmarks {
   id: number
@@ -35,6 +36,18 @@ interface Bookmarks {
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
 const { updateBookmarkList, resetBookmarkList } = bookmarkStore
+
+const el = ref()
+const { start } = useDraggable(el, bookmarkList, {
+  animation: 150,
+  ghostClass: 'ghost',
+  onStart() {
+    console.log('start')
+  },
+  onUpdate() {
+    console.log('update')
+  }
+})
 
 const getUserBookmarkList = async () => {
   await getBookmarkListApi<Bookmarks>()
@@ -60,6 +73,10 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
 .dock {
   background-color: rgb(211, 211, 211, 0.5);
   min-width: 76px;
