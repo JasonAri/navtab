@@ -52,7 +52,7 @@ import {
 import { CloseOutlined } from '@ant-design/icons-vue'
 import useRegexp from '../hooks/useRegexp'
 import { loginApi } from '../api/user'
-import { setToken } from '../utils/tools'
+import { setAccessToken, setRefreshToken } from '../utils/tools'
 
 interface FormState {
   username: string
@@ -86,7 +86,8 @@ const loginRequest = async () => {
       // console.log(res)
       message.success('登录成功!')
       loginBtnLoading.value = false
-      setToken(res.data.token)
+      setAccessToken(res.data.accessToken)
+      setRefreshToken(res.data.refreshToken)
       router.push('/')
     })
     .catch((err) => {

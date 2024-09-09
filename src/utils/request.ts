@@ -4,7 +4,8 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios'
-import { getToken } from './tools'
+import { getAccessToken } from './tools'
+import refreshAccessToken from './authService'
 
 export interface ApiResponse<T> {
   code: number
@@ -20,7 +21,7 @@ const service: AxiosInstance = axios.create({
 
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = getToken()
+    const token = getAccessToken()
     config.headers.Authorization = token ? `Bearer ${token}` : undefined
     return config
   },
@@ -31,7 +32,18 @@ service.interceptors.response.use(
   (response: AxiosResponse) => {
     return response
   },
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
+    // original request
+    const originalRequest = error.config
+    if (error.response && error.response.status === 401) {
+      try {
+        const newAccessToken = await refreshAccessToken()
+        originalRequest!.headers.Authorization = `Bearer ${newAccessToken}`
+        return service(originalRequest as InternalAxiosRequestConfig)
+      } catch (err) {
+        return Promise.reject(err)
+      }
+    }
     return Promise.reject(error)
   }
 )

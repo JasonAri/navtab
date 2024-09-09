@@ -3,8 +3,9 @@ export interface ReqUserData {
   password: string
 }
 
-export interface ResToken {
-  token: string
+export interface ResTokens {
+  accessToken: string
+  refreshToken: string
 }
 
 export interface ResBookmarkList<T> {

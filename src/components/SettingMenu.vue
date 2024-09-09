@@ -19,8 +19,8 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { SettingFilled } from '@ant-design/icons-vue'
-import { getToken, removeToken } from '../utils/tools'
 import { useBookmarkStore } from '../store/bookmark'
+import { getAccessToken, removeTokens } from '../utils/tools'
 
 const isShowMenu = ref(false)
 const isClickOutsite = ref(false)
@@ -36,7 +36,7 @@ const handleSettingBtn = () => {
 }
 
 const handleLogout = () => {
-  removeToken()
+  removeTokens()
   isLogin.value = false
   resetBookmarkList()
 }
@@ -57,7 +57,7 @@ watch(isClickOutsite, () => {
 })
 
 onMounted(() => {
-  if (getToken()) {
+  if (getAccessToken()) {
     isLogin.value = true
   }
   document.addEventListener('click', handleClick)

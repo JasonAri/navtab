@@ -20,7 +20,8 @@ import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
 import { getBookmarkListApi } from '../api/user'
-import { getToken, removeToken } from '../utils/tools'
+import { getAccessToken, removeTokens } from '../utils/tools'
+import { message } from 'ant-design-vue'
 
 interface Bookmarks {
   id: number
@@ -35,23 +36,22 @@ const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
 const { updateBookmarkList, resetBookmarkList } = bookmarkStore
 
-const getUserBookmarkList = () => {
-  getBookmarkListApi<Bookmarks>()
+const getUserBookmarkList = async () => {
+  await getBookmarkListApi<Bookmarks>()
     .then((res) => {
       // console.log(res)
       updateBookmarkList(res.data.bookmarkList)
     })
     .catch((err) => {
-      console.warn(err)
-      if (err.response.data.message == 'Invalid token') {
-        removeToken()
-        resetBookmarkList()
-      }
+      console.error(err)
+      message.warn('登录状态已过期，请重新登录')
+      removeTokens()
+      resetBookmarkList()
     })
 }
 
 onMounted(() => {
-  if (getToken()) {
+  if (getAccessToken()) {
     getUserBookmarkList()
   } else {
     resetBookmarkList()

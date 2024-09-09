@@ -1,11 +1,20 @@
-export function getToken() {
-  return localStorage.getItem('token')
+export function setAccessToken(accessToken: string) {
+  return localStorage.setItem('access_token', accessToken)
 }
 
-export function setToken(token: string) {
-  return localStorage.setItem('token', token)
+export function setRefreshToken(refreshToken: string) {
+  return localStorage.setItem('refresh_token', refreshToken)
 }
 
-export function removeToken() {
-  return localStorage.removeItem('token')
+export function getAccessToken() {
+  return localStorage.getItem('access_token')
+}
+
+export function getRefreshToken() {
+  return localStorage.getItem('refresh_token')
+}
+
+export function removeTokens() {
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('refresh_token')
 }
