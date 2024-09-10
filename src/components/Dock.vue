@@ -19,19 +19,10 @@ import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
-import { getBookmarkListApi } from '../api/user'
+import { getBookmarkListApi, setBookmarkListApi } from '../api/user'
 import { getAccessToken, removeTokens } from '../utils/tools'
 import { message } from 'ant-design-vue'
 import { useDraggable } from 'vue-draggable-plus'
-
-interface Bookmarks {
-  id: number
-  title: string
-  imgUrl: string
-  size: string
-  href: string
-  bgColor?: string
-}
 
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
@@ -42,15 +33,16 @@ const { start } = useDraggable(el, bookmarkList, {
   animation: 150,
   ghostClass: 'ghost',
   onStart() {
-    console.log('start')
+    // console.log('start', start)
   },
-  onUpdate(e) {
-    console.log('update', e)
+  onUpdate() {
+    const data = { bookmarkList: bookmarkList.value }
+    setUserBookmarkList(data)
   }
 })
 
 const getUserBookmarkList = async () => {
-  await getBookmarkListApi<Bookmarks>()
+  await getBookmarkListApi()
     .then((res) => {
       // console.log(res)
       const bookmarkListData = res.data.bookmarkList
@@ -65,6 +57,17 @@ const getUserBookmarkList = async () => {
       message.warn('登录状态已过期，请重新登录')
       removeTokens()
       resetBookmarkList()
+    })
+}
+
+const setUserBookmarkList = async (data: any) => {
+  await setBookmarkListApi(data)
+    .then((res) => {
+      res.code === 201 && message.success('同步成功！')
+    })
+    .catch((err) => {
+      console.error('Failed to set bookmark list', err)
+      message.warn('同步失败!')
     })
 }
 

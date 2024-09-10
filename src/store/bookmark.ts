@@ -1,14 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
-interface Bookmarks {
-  id: number
-  title: string
-  imgUrl: string
-  size: string
-  href: string
-  bgColor?: string
-}
+import { Bookmarks } from '../api/types/user'
 
 export const useBookmarkStore = defineStore('bookmark', () => {
   const defaultBookmarkList = ref<Array<Bookmarks>>([

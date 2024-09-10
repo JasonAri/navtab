@@ -11,3 +11,16 @@ export interface ResTokens {
 export interface ResBookmarkList<T> {
   bookmarkList: Array<T>
 }
+
+export interface Bookmarks {
+  id: number
+  title: string
+  imgUrl: string
+  size: string
+  href: string
+  bgColor?: string
+}
+
+export interface ReqBookmarkListData<T> {
+  bookmarkList: Array<T>
+}
