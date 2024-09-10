@@ -44,8 +44,8 @@ const { start } = useDraggable(el, bookmarkList, {
   onStart() {
     console.log('start')
   },
-  onUpdate() {
-    console.log('update')
+  onUpdate(e) {
+    console.log('update', e)
   }
 })
 
@@ -53,7 +53,12 @@ const getUserBookmarkList = async () => {
   await getBookmarkListApi<Bookmarks>()
     .then((res) => {
       // console.log(res)
-      updateBookmarkList(res.data.bookmarkList)
+      const bookmarkListData = res.data.bookmarkList
+      if (bookmarkListData.length > 0) {
+        updateBookmarkList(bookmarkListData)
+      } else {
+        resetBookmarkList()
+      }
     })
     .catch((err) => {
       console.error('Failed to get bookmark list', err)
