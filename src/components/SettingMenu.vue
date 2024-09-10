@@ -7,10 +7,13 @@
   <Transition name="fade">
     <div v-show="isShowMenu" class="setting-menu" ref="settingMenuRef">
       <div class="menu-list">
-        <RouterLink class="item-login" to="/login" v-if="!isLogin">
+        <a class="list-item" v-show="isLogin" @click="handleEditing">
+          编辑书签
+        </a>
+        <RouterLink class="list-item" to="/login" v-if="!isLogin">
           登录/注册
         </RouterLink>
-        <a class="item-login" @click="handleLogout" v-if="isLogin">退出登录</a>
+        <a class="list-item" @click="handleLogout" v-if="isLogin">退出登录</a>
       </div>
     </div>
   </Transition>
@@ -29,18 +32,20 @@ const settingMenuRef: any = ref(null)
 const isLogin = ref(false)
 
 const bookmarkStore = useBookmarkStore()
-const { resetBookmarkList } = bookmarkStore
+const { resetBookmarkList, setIsEditing } = bookmarkStore
 
 const handleSettingBtn = () => {
   isShowMenu.value = !isShowMenu.value
 }
-
 const handleLogout = () => {
   removeTokens()
+  setIsEditing(false)
   isLogin.value = false
   resetBookmarkList()
 }
-
+const handleEditing = () => {
+  setIsEditing(true)
+}
 const handleClick = (e: MouseEvent) => {
   if (isShowMenu.value) {
     if (
@@ -55,7 +60,6 @@ const handleClick = (e: MouseEvent) => {
 watch(isClickOutsite, () => {
   console.log(isClickOutsite.value)
 })
-
 onMounted(() => {
   if (getAccessToken()) {
     isLogin.value = true
@@ -93,7 +97,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
 }
-.item-login {
+.list-item {
   width: 90%;
   height: 30px;
   line-height: 30px;

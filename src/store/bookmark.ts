@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Bookmarks } from '../api/types/user'
 
 export const useBookmarkStore = defineStore('bookmark', () => {
@@ -34,17 +34,26 @@ export const useBookmarkStore = defineStore('bookmark', () => {
     }
   ])
   const bookmarkList = ref<Array<Bookmarks>>([])
+  const isEditingBookmark = ref<boolean>(false)
+  const isEditing = computed(() => isEditingBookmark.value)
+
   function updateBookmarkList(payload: Array<Bookmarks>) {
     bookmarkList.value = payload
   }
   function resetBookmarkList() {
     bookmarkList.value = defaultBookmarkList.value
   }
+  function setIsEditing(state: boolean) {
+    isEditingBookmark.value = state
+  }
 
   return {
     defaultBookmarkList,
     bookmarkList,
+    isEditingBookmark,
+    isEditing,
     updateBookmarkList,
-    resetBookmarkList
+    resetBookmarkList,
+    setIsEditing
   }
 })

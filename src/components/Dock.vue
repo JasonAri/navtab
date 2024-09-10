@@ -4,36 +4,50 @@
       <NavIcon
         v-for="item in bookmarkList"
         :key="item.id"
+        :id="item.id"
         :imgUrl="item.imgUrl"
         :size="item.size"
         :href="item.href"
         :bgColor="item.bgColor"
         :title="item.title"
       />
+      <PlusCircleFilled
+        class="editing-btn"
+        v-show="isEditingBookmark"
+        @click="handleAddBookmark"
+      />
+      <CheckCircleFilled
+        class="editing-btn"
+        v-show="isEditingBookmark"
+        @click="handleSaveEditing"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
 import { getBookmarkListApi, setBookmarkListApi } from '../api/user'
 import { getAccessToken, removeTokens } from '../utils/tools'
 import { message } from 'ant-design-vue'
+import { CheckCircleFilled, PlusCircleFilled } from '@ant-design/icons-vue'
 import { useDraggable } from 'vue-draggable-plus'
 
 const bookmarkStore = useBookmarkStore()
-const { bookmarkList } = storeToRefs(bookmarkStore)
-const { updateBookmarkList, resetBookmarkList } = bookmarkStore
+const { bookmarkList, isEditingBookmark } = storeToRefs(bookmarkStore)
+const { updateBookmarkList, resetBookmarkList, setIsEditing } =
+  bookmarkStore
 
 const el = ref()
-const { start } = useDraggable(el, bookmarkList, {
+const draggable = useDraggable(el, bookmarkList, {
   animation: 150,
   ghostClass: 'ghost',
+  disabled: true,
   onStart() {
-    // console.log('start', start)
+    // console.log('start', draggable)
   },
   onUpdate() {
     const data = { bookmarkList: bookmarkList.value }
@@ -71,6 +85,15 @@ const setUserBookmarkList = async (data: any) => {
     })
 }
 
+const handleSaveEditing = () => {
+  setIsEditing(false)
+}
+const handleAddBookmark = () => {}
+
+watch(isEditingBookmark, () => {
+  // console.log(isEditingBookmark.value)
+  isEditingBookmark.value == true ? draggable.resume() : draggable.pause()
+})
 onMounted(() => {
   if (getAccessToken()) {
     getUserBookmarkList()
@@ -81,10 +104,6 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
-}
 .dock {
   background-color: rgb(211, 211, 211, 0.5);
   min-width: 76px;
@@ -115,6 +134,21 @@ onMounted(() => {
         height: 32px;
       }
     }
+  }
+}
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+.editing-btn {
+  font-size: 24px;
+  margin: 0 10px;
+  color: rgba(255, 255, 255, 0.5);
+  &:hover {
+    color: rgba(255, 255, 255, 0.2);
+  }
+  &:active {
+    color: rgba(255, 255, 255, 0.3);
   }
 }
 </style>

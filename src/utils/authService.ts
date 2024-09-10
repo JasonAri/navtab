@@ -27,6 +27,7 @@ const refreshAccessToken = async () => {
       })
     setAccessToken(res.data.data.accessToken)
     setRefreshToken(res.data.data.refreshToken)
+    console.log('Refresh Succeed')
     return res.data.data.accessToken
   } catch (error) {
     console.error('Failed to refresh token', error)
