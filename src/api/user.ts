@@ -29,3 +29,12 @@ export function setBookmarkListApi(data: ReqBookmarkListData<Bookmarks>) {
     data
   })
 }
+
+export function uploadFileApi(data: FormData) {
+  return request({
+    url: '/upload',
+    method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data
+  })
+}

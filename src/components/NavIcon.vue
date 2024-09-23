@@ -1,27 +1,31 @@
 <template>
-  <NavTooltip :title="title">
-    <div style="position: relative">
-      <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">
-        <img
-          :src="`/images/${imgUrl}`"
-          :style="{ width: `${size}px`, height: `${size}px` }"
-          alt=""
+  <ContextMenu :menu="[{ label: '删除' }]" @select="handleMenuSelect">
+    <NavTooltip :title="title">
+      <div style="position: relative" @click.right.native="showContextMenu">
+        <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">
+          <img
+            :src="`${imgBaseUrl}/${imgUrl}`"
+            :style="{ width: `${size}px`, height: `${size}px` }"
+            alt=""
+          />
+        </a>
+        <MinusCircleFilled
+          class="del-icon"
+          v-show="isEditingBookmark"
+          @click="handleDelBtn(id as number)"
         />
-      </a>
-      <MinusCircleFilled
-        class="del-icon"
-        v-show="isEditingBookmark"
-        @click="handleDelBtn(id as number)"
-      />
-    </div>
-  </NavTooltip>
+      </div>
+    </NavTooltip>
+  </ContextMenu>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavTooltip from './NavTooltip.vue'
+import ContextMenu from './ContextMenu.vue'
 import { MinusCircleFilled } from '@ant-design/icons-vue'
+import { ref } from 'vue'
 
 defineProps({
   id: {
@@ -50,10 +54,19 @@ defineProps({
   }
 })
 
+const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images'
+
 const bookmarkStore = useBookmarkStore()
 const { isEditingBookmark, bookmarkList } = storeToRefs(bookmarkStore)
 const { updateBookmarkList } = bookmarkStore
 
+const handleMenuSelect=(item)=>{
+  console.log('handleMenuSelect')
+  console.log(item)
+  if(item.label==='删除'){
+    // del
+  }
+}
 const handleDelBtn = (id: number) => {
   console.log(id)
   // 深拷贝
