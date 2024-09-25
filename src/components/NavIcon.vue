@@ -1,7 +1,7 @@
 <template>
   <ContextMenu :menu="[{ label: '删除' }]" @select="handleMenuSelect">
     <NavTooltip :title="title">
-      <div style="position: relative" @click.right.native="showContextMenu">
+      <div style="position: relative">
         <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">
           <img
             :src="`${imgBaseUrl}/${imgUrl}`"
@@ -9,25 +9,17 @@
             alt=""
           />
         </a>
-        <MinusCircleFilled
-          class="del-icon"
-          v-show="isEditingBookmark"
-          @click="handleDelBtn(id as number)"
-        />
       </div>
     </NavTooltip>
   </ContextMenu>
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavTooltip from './NavTooltip.vue'
 import ContextMenu from './ContextMenu.vue'
-import { MinusCircleFilled } from '@ant-design/icons-vue'
-import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   id: {
     type: Number,
     require: true
@@ -57,28 +49,13 @@ defineProps({
 const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images'
 
 const bookmarkStore = useBookmarkStore()
-const { isEditingBookmark, bookmarkList } = storeToRefs(bookmarkStore)
-const { updateBookmarkList } = bookmarkStore
+const { delBookmarkById } = bookmarkStore
 
-const handleMenuSelect=(item)=>{
-  console.log('handleMenuSelect')
-  console.log(item)
-  if(item.label==='删除'){
+const handleMenuSelect = (item: { label: string }) => {
+  console.log(item.label)
+  if (item.label === '删除') {
     // del
-  }
-}
-const handleDelBtn = (id: number) => {
-  console.log(id)
-  // 深拷贝
-  const data = JSON.parse(JSON.stringify(bookmarkList.value))
-  const resIdx = data.findIndex((item: any) => {
-    return item.id === id
-  })
-  console.log(resIdx)
-  if (resIdx !== -1) {
-    data.splice(resIdx, 1)
-    console.log(data)
-    updateBookmarkList(data)
+    delBookmarkById(props.id as number)
   }
 }
 </script>

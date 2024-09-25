@@ -46,6 +46,12 @@ export const useBookmarkStore = defineStore('bookmark', () => {
   function setIsEditing(state: boolean) {
     isEditingBookmark.value = state
   }
+  function delBookmarkById(id: number) {
+    const newBookmarkList = bookmarkList.value.filter((item) => {
+      if (item.id !== id) return item
+    })
+    updateBookmarkList(newBookmarkList)
+  }
 
   return {
     defaultBookmarkList,
@@ -54,6 +60,7 @@ export const useBookmarkStore = defineStore('bookmark', () => {
     isEditing,
     updateBookmarkList,
     resetBookmarkList,
-    setIsEditing
+    setIsEditing,
+    delBookmarkById
   }
 })
