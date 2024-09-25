@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
-export default function (containerRef) {
+export default function (containerRef: any) {
   const x = ref(0)
   const y = ref(0)
   const visible = ref(false)
@@ -11,7 +11,6 @@ export default function (containerRef) {
     visible.value = true
     x.value = e.clientX
     y.value = e.clientY
-    console.log('@@@')
   }
 
   function closeMenu() {
@@ -19,13 +18,13 @@ export default function (containerRef) {
   }
 
   onMounted(() => {
-    containerRef.value.addEventListener('contextmenu', handleContextMenu)
+    containerRef.value?.addEventListener('contextmenu', handleContextMenu)
     window.addEventListener('click', closeMenu, true)
     window.addEventListener('contextmenu', closeMenu, true)
   })
 
   onUnmounted(() => {
-    containerRef.value.removeEventListener('contextmenu', handleContextMenu)
+    containerRef.value?.removeEventListener('contextmenu', handleContextMenu)
     window.removeEventListener('click', closeMenu, true)
     window.removeEventListener('contextmenu', closeMenu, true)
   })

@@ -5,7 +5,7 @@
       <div
         class="context-menu"
         v-if="visible"
-        :style="{ left: x + 'px', top: y + 'px' }"
+        :style="{ left: x + 'px', top: y - 48 + 'px' }"
       >
         <div class="menu-list">
           <div
@@ -29,13 +29,13 @@ import useContextMenu from '../hooks/useContextMenu'
 const emit = defineEmits(['select'])
 defineProps({
   menu: {
-    type: Array,
+    type: Array<{ label: string }>,
     require: true
   }
 })
-const containerRef = ref<HTMLInputElement | null>(null)
+const containerRef = ref<HTMLElement | null>(null)
 const { x, y, visible } = useContextMenu(containerRef)
-const handleClick = (item) => {
+const handleClick = (item: object) => {
   visible.value = false
   emit('select', item)
 }
