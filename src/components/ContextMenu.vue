@@ -5,7 +5,7 @@
       <div
         class="context-menu"
         v-if="visible"
-        :style="{ left: x + 'px', top: y - 48 + 'px' }"
+        :style="{ left: x + 'px', top: y - 80 + 'px' }"
       >
         <div class="menu-list">
           <div
@@ -51,12 +51,12 @@ const handleClick = (item: object) => {
   box-shadow: 2px 2px 1px #eee;
 }
 .menu-list {
-  height: 32px;
+  font-size: 14px;
   line-height: 32px;
   text-align: center;
   margin: 8px 0;
-  &:hover {
-    background-color: #eee;
-  }
+}
+.menu-item:hover {
+  background-color: #eee;
 }
 </style>

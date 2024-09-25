@@ -1,5 +1,8 @@
 <template>
-  <ContextMenu :menu="[{ label: '删除' }]" @select="handleMenuSelect">
+  <ContextMenu
+    :menu="[{ label: '编辑' }, { label: '删除' }]"
+    @select="handleMenuSelect"
+  >
     <NavTooltip :title="title">
       <div style="position: relative">
         <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">

@@ -13,22 +13,6 @@
       />
     </div>
   </div>
-  <Drawer
-    :width="300"
-    title="添加书签"
-    placement="left"
-    :open="showDrawer"
-    @close="closeDrawer"
-  >
-    <div><span>书签名</span></div>
-    <input type="text" placeholder="书签名" />
-    <div><span>链接</span></div>
-    <input type="text" placeholder="链接" />
-    <hr />
-    <div><span>图标</span></div>
-    <input type="file" @change="handleFileChange" />
-    <button @click="uploadFile" :disabled="!file">上传图片</button>
-  </Drawer>
 </template>
 
 <script setup lang="ts">
@@ -36,17 +20,11 @@ import { ref, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
-import {
-  getBookmarkListApi,
-  setBookmarkListApi,
-  uploadFileApi
-} from '../api/user'
+import { getBookmarkListApi, setBookmarkListApi } from '../api/user'
 import { getAccessToken, removeTokens } from '../utils/tools'
-import { message, Drawer } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 import { useDraggable } from 'vue-draggable-plus'
 
-const file = ref<File | null>(null)
-const showDrawer = ref<boolean>(false)
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList, isEditingBookmark } = storeToRefs(bookmarkStore)
 const { updateBookmarkList, resetBookmarkList, setIsEditing } = bookmarkStore
@@ -86,41 +64,6 @@ const setUserBookmarkList = async (data: any) => {
     .catch((err) => {
       console.error('Failed to set bookmark list', err)
       message.warn('同步失败!')
-    })
-}
-
-const handleSaveEditing = () => {
-  setIsEditing(false)
-  const data = { bookmarkList: bookmarkList.value }
-  setUserBookmarkList(data)
-}
-const handleAddBookmark = () => {
-  showDrawer.value = true
-}
-const closeDrawer = () => {
-  showDrawer.value = false
-}
-
-const handleFileChange = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  if (target.files && target.files.length > 0) {
-    file.value = target.files[0]
-  }
-}
-
-const uploadFile = async () => {
-  if (!file.value) return
-
-  const formData = new FormData()
-  formData.append('image', file.value)
-
-  await uploadFileApi(formData)
-    .then((res) => {
-      console.log(res)
-      showDrawer.value = false
-    })
-    .catch((err) => {
-      console.error(err)
     })
 }
 
