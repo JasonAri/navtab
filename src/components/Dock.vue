@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
@@ -32,6 +32,7 @@ const el = ref()
 useDraggable(el, bookmarkList, {
   animation: 150,
   ghostClass: 'ghost',
+  delay: 50,
   onStart() {},
   onUpdate() {
     saveUserBookmarkList()
@@ -40,7 +41,7 @@ useDraggable(el, bookmarkList, {
 
 const getUserBookmarkList = async () => {
   await getBookmarkList()
-    .then((res) => {
+    .then(() => {
       // console.log(res)
     })
     .catch((err) => {
