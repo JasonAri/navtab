@@ -52,13 +52,20 @@ const props = defineProps({
 const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images'
 
 const bookmarkStore = useBookmarkStore()
-const { delBookmarkById } = bookmarkStore
+const { delBookmarkById, setIsEditing } = bookmarkStore
 
 const handleMenuSelect = (item: { label: string }) => {
   console.log(item.label)
-  if (item.label === '删除') {
-    // del
-    delBookmarkById(props.id as number)
+  switch (item.label) {
+    case '编辑':
+      setIsEditing(true)
+      break
+    case '删除':
+      delBookmarkById(props.id as number)
+      break
+
+    default:
+      break
   }
 }
 </script>

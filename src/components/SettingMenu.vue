@@ -7,9 +7,6 @@
   <Transition name="fade">
     <div v-show="isShowMenu" class="setting-menu" ref="settingMenuRef">
       <div class="menu-list">
-        <a class="list-item" v-show="isLogin" @click="handleEditing">
-          编辑书签
-        </a>
         <RouterLink class="list-item" to="/login" v-if="!isLogin">
           登录/注册
         </RouterLink>
@@ -42,9 +39,6 @@ const handleLogout = () => {
   setIsEditing(false)
   isLogin.value = false
   resetBookmarkList()
-}
-const handleEditing = () => {
-  setIsEditing(true)
 }
 const handleClick = (e: MouseEvent) => {
   if (isShowMenu.value) {

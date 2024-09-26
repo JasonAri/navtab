@@ -26,16 +26,18 @@ import { message } from 'ant-design-vue'
 import { useDraggable } from 'vue-draggable-plus'
 
 const bookmarkStore = useBookmarkStore()
-const { bookmarkList, isEditingBookmark } = storeToRefs(bookmarkStore)
-const { updateBookmarkList, resetBookmarkList, setIsEditing } = bookmarkStore
+const { bookmarkList } = storeToRefs(bookmarkStore)
+const { updateBookmarkList, resetBookmarkList } = bookmarkStore
 
 const el = ref()
-const draggable = useDraggable(el, bookmarkList, {
+useDraggable(el, bookmarkList, {
   animation: 150,
   ghostClass: 'ghost',
-  disabled: true,
   onStart() {},
-  onUpdate() {}
+  onUpdate() {
+    setUserBookmarkList()
+    console.log('aaa')
+  }
 })
 
 const getUserBookmarkList = async () => {
@@ -56,8 +58,11 @@ const getUserBookmarkList = async () => {
       resetBookmarkList()
     })
 }
-const setUserBookmarkList = async (data: any) => {
-  await setBookmarkListApi(data)
+
+const setUserBookmarkList = async () => {
+  console.log(bookmarkList._rawValue)
+  const reqData = bookmarkList._rawValue
+  await setBookmarkListApi(reqData)
     .then((res) => {
       res.code === 201 && message.success('同步成功！')
     })
@@ -67,10 +72,6 @@ const setUserBookmarkList = async (data: any) => {
     })
 }
 
-watch(isEditingBookmark, () => {
-  // console.log(isEditingBookmark.value)
-  isEditingBookmark.value == true ? draggable.resume() : draggable.pause()
-})
 onMounted(() => {
   if (getAccessToken()) {
     getUserBookmarkList()
