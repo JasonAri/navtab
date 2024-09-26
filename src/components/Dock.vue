@@ -20,14 +20,13 @@ import { ref, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
-import { getBookmarkListApi, setBookmarkListApi } from '../api/user'
 import { getAccessToken, removeTokens } from '../utils/tools'
 import { message } from 'ant-design-vue'
 import { useDraggable } from 'vue-draggable-plus'
 
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
-const { updateBookmarkList, resetBookmarkList } = bookmarkStore
+const { getBookmarkList, resetBookmarkList, saveBookmarkList } = bookmarkStore
 
 const el = ref()
 useDraggable(el, bookmarkList, {
@@ -35,40 +34,32 @@ useDraggable(el, bookmarkList, {
   ghostClass: 'ghost',
   onStart() {},
   onUpdate() {
-    setUserBookmarkList()
-    console.log('aaa')
+    saveUserBookmarkList()
   }
 })
 
 const getUserBookmarkList = async () => {
-  await getBookmarkListApi()
+  await getBookmarkList()
     .then((res) => {
       // console.log(res)
-      const bookmarkListData = res.data.bookmarkList
-      if (bookmarkListData.length > 0) {
-        updateBookmarkList(bookmarkListData)
-      } else {
-        resetBookmarkList()
-      }
     })
     .catch((err) => {
-      console.error('Failed to get bookmark list', err)
-      message.warn('登录状态已过期，请重新登录')
-      removeTokens()
+      console.error(err)
+      message.error('获取书签数据失败')
       resetBookmarkList()
+      removeTokens()
     })
 }
 
-const setUserBookmarkList = async () => {
-  console.log(bookmarkList._rawValue)
-  const reqData = bookmarkList._rawValue
-  await setBookmarkListApi(reqData)
+const saveUserBookmarkList = async () => {
+  await saveBookmarkList()
     .then((res) => {
-      res.code === 201 && message.success('同步成功！')
+      console.log(res)
+      message.success('同步成功')
     })
     .catch((err) => {
-      console.error('Failed to set bookmark list', err)
-      message.warn('同步失败!')
+      console.error(err)
+      message.error('同步失败，请重试')
     })
 }
 

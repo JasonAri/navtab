@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { Bookmarks } from '../api/types/user'
+import { getBookmarkListApi, setBookmarkListApi } from '../api/user'
 
 export const useBookmarkStore = defineStore('bookmark', {
   state: () => ({
@@ -37,12 +38,33 @@ export const useBookmarkStore = defineStore('bookmark', {
     isEditingBookmark: false as boolean
   }),
   actions: {
-    updateBookmarkList(payload: Array<Bookmarks>) {
-      console.log(this)
-      this.bookmarkList = payload
+    async getBookmarkList() {
+      try {
+        const res = await getBookmarkListApi()
+        if (res.data.bookmarkList.length > 0) {
+          this.bookmarkList = res.data.bookmarkList
+        } else {
+          throw new Error('书签数据错误')
+        }
+        return Promise.resolve('OK')
+      } catch (error) {
+        return Promise.reject(error)
+      }
     },
     resetBookmarkList() {
       this.bookmarkList = this.defaultBookmarkList
+    },
+    async saveBookmarkList() {
+      try {
+        const data = { bookmarkList: this.bookmarkList }
+        const res = await setBookmarkListApi(data)
+        if (res.code >= 400) {
+          throw new Error(res.message)
+        }
+        return Promise.resolve(res)
+      } catch (error) {
+        return Promise.reject(error)
+      }
     },
     setIsEditing(status: boolean) {
       this.isEditingBookmark = status
@@ -51,7 +73,7 @@ export const useBookmarkStore = defineStore('bookmark', {
       const newBookmarkList = this.bookmarkList.filter((item) => {
         if (item.id !== id) return item
       })
-      this.updateBookmarkList(newBookmarkList)
+      this.bookmarkList = newBookmarkList
     }
   }
 })
