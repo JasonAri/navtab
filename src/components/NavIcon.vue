@@ -21,6 +21,7 @@
 import { useBookmarkStore } from '../store/bookmark'
 import NavTooltip from './NavTooltip.vue'
 import ContextMenu from './ContextMenu.vue'
+import { message } from 'ant-design-vue'
 
 const props = defineProps({
   id: {
@@ -52,16 +53,22 @@ const props = defineProps({
 const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images'
 
 const bookmarkStore = useBookmarkStore()
-const { delBookmarkById, setIsEditing } = bookmarkStore
+const { delBookmarkById } = bookmarkStore
 
 const handleMenuSelect = (item: { label: string }) => {
   console.log(item.label)
   switch (item.label) {
     case '编辑':
-      setIsEditing(true)
       break
     case '删除':
       delBookmarkById(props.id as number)
+        .then((res) => {
+          message.success('删除成功')
+        })
+        .catch((err) => {
+          console.error(err)
+          message.error('删除失败')
+        })
       break
 
     default:

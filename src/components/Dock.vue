@@ -55,7 +55,7 @@ const getUserBookmarkList = async () => {
 const saveUserBookmarkList = async () => {
   await saveBookmarkList()
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       message.success('同步成功')
     })
     .catch((err) => {

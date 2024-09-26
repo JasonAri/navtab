@@ -29,14 +29,13 @@ const settingMenuRef: any = ref(null)
 const isLogin = ref(false)
 
 const bookmarkStore = useBookmarkStore()
-const { resetBookmarkList, setIsEditing } = bookmarkStore
+const { resetBookmarkList } = bookmarkStore
 
 const handleSettingBtn = () => {
   isShowMenu.value = !isShowMenu.value
 }
 const handleLogout = () => {
   removeTokens()
-  setIsEditing(false)
   isLogin.value = false
   resetBookmarkList()
 }

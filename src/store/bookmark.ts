@@ -34,8 +34,7 @@ export const useBookmarkStore = defineStore('bookmark', {
         href: 'https://bilibili.com/'
       }
     ],
-    bookmarkList: [] as Array<Bookmarks>,
-    isEditingBookmark: false as boolean
+    bookmarkList: [] as Array<Bookmarks>
   }),
   actions: {
     async getBookmarkList() {
@@ -66,14 +65,17 @@ export const useBookmarkStore = defineStore('bookmark', {
         return Promise.reject(error)
       }
     },
-    setIsEditing(status: boolean) {
-      this.isEditingBookmark = status
-    },
-    delBookmarkById(id: number) {
-      const newBookmarkList = this.bookmarkList.filter((item) => {
-        if (item.id !== id) return item
-      })
-      this.bookmarkList = newBookmarkList
+    async delBookmarkById(id: number) {
+      try {
+        const newBookmarkList = this.bookmarkList.filter((item) => {
+          if (item.id !== id) return item
+        })
+        this.bookmarkList = newBookmarkList
+        const res = await this.saveBookmarkList()
+        return Promise.resolve(res)
+      } catch (error) {
+        return Promise.reject(error)
+      }
     }
   }
 })
