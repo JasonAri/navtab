@@ -10,19 +10,57 @@
         :href="item.href"
         :bgColor="item.bgColor"
         :title="item.title"
+        @editBookmark="showDrawer"
       />
     </div>
   </div>
+  <Drawer
+    title="编辑书签"
+    placement="left"
+    :open="drawerVisible"
+    @close="closeDrawer"
+  >
+    <Form :model="bookmarkInfo">
+      <FormItem label="书签名">
+        <Input v-model:value="bookmarkInfo.title" />
+      </FormItem>
+      <FormItem label="URL">
+        <Input v-model:value="bookmarkInfo.href" />
+      </FormItem>
+      <FormItem label="图标地址">
+        <Input v-model:value="bookmarkInfo.imgUrl" />
+      </FormItem>
+      <FormItem label="图标大小">
+        <Input v-model:value="bookmarkInfo.size" />
+      </FormItem>
+      <FormItem label="背景颜色">
+        <Input v-model:value="bookmarkInfo.bgColor" />
+      </FormItem>
+      <Button style="width: 45%">取消</Button>
+      <Button style="width: 45%; margin-left: 10%" type="primary">保存</Button>
+    </Form>
+  </Drawer>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
 import { getAccessToken, removeTokens } from '../utils/tools'
-import { message } from 'ant-design-vue'
+import { message, Drawer, Form, FormItem, Input, Button } from 'ant-design-vue'
 import { useDraggable } from 'vue-draggable-plus'
+import { Bookmarks } from '../api/types/user'
+
+const drawerVisible = ref(false)
+const bookmarkInfo = reactive<Bookmarks>({
+  id: 0,
+  title: 's',
+  imgUrl: 's',
+  size: 's',
+  href: 's',
+  bgColor: 's'
+})
 
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
@@ -62,6 +100,19 @@ const saveUserBookmarkList = async () => {
       console.error(err)
       message.error('同步失败，请重试')
     })
+}
+
+const showDrawer = (bookmarkId: number) => {
+  drawerVisible.value = true
+  const bookmarkData = bookmarkList.value.find((item) => {
+    return item.id === bookmarkId
+  })
+  Object.assign(bookmarkInfo, bookmarkData)
+}
+
+const closeDrawer = () => {
+  drawerVisible.value = false
+  console.log('closeDrawer')
 }
 
 onMounted(() => {
