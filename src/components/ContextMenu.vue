@@ -1,11 +1,11 @@
 <template>
-  <div class="container" ref="containerRef">
+  <div class="container" ref="containerRef" id="cm">
     <slot></slot>
     <Teleport to="body">
       <div
         class="context-menu"
         v-if="visible"
-        :style="{ left: x + 'px', top: y - 80 + 'px' }"
+        :style="{ left: x + 'px', top: y - (16 + 32 * 3) + 'px' }"
       >
         <div class="menu-list">
           <div

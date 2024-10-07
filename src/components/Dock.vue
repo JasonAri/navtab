@@ -10,17 +10,17 @@
         :href="item.href"
         :bgColor="item.bgColor"
         :title="item.title"
-        @editBookmark="showDrawer"
+        @addOrEditBookmark="showDrawer"
       />
     </div>
   </div>
   <Drawer
-    title="编辑书签"
+    :title="drawerInfo.drawerTitle"
     placement="left"
-    :open="drawerVisible"
+    :open="drawerInfo.drawerVisible"
     @close="closeDrawer"
   >
-    <Form :model="bookmarkInfo">
+    <Form :model="bookmarkInfo" :label-col="{ style: { width: '100px' } }">
       <FormItem label="书签名">
         <Input v-model:value="bookmarkInfo.title" />
       </FormItem>
@@ -30,14 +30,20 @@
       <FormItem label="图标地址">
         <Input v-model:value="bookmarkInfo.imgUrl" />
       </FormItem>
-      <FormItem label="图标大小">
+      <FormItem label="图标大小 (px)">
         <Input v-model:value="bookmarkInfo.size" />
       </FormItem>
       <FormItem label="背景颜色">
         <Input v-model:value="bookmarkInfo.bgColor" />
       </FormItem>
-      <Button style="width: 45%">取消</Button>
-      <Button style="width: 45%; margin-left: 10%" type="primary">保存</Button>
+      <Button style="width: 45%" @click="closeDrawer">取消</Button>
+      <Button
+        style="width: 45%; margin-left: 10%"
+        type="primary"
+        @click="handleSaveEditing"
+      >
+        {{ drawerInfo.drawerTitle === '编辑书签' ? '保存' : '添加' }}
+      </Button>
     </Form>
   </Drawer>
 </template>
@@ -52,14 +58,17 @@ import { message, Drawer, Form, FormItem, Input, Button } from 'ant-design-vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { Bookmarks } from '../api/types/user'
 
-const drawerVisible = ref(false)
+const drawerInfo = reactive({
+  drawerTitle: '',
+  drawerVisible: false
+})
 const bookmarkInfo = reactive<Bookmarks>({
   id: 0,
-  title: 's',
-  imgUrl: 's',
-  size: 's',
-  href: 's',
-  bgColor: 's'
+  title: 'title',
+  imgUrl: 'imgUrl',
+  size: 'size',
+  href: 'href',
+  bgColor: '#fff'
 })
 
 const bookmarkStore = useBookmarkStore()
@@ -102,17 +111,25 @@ const saveUserBookmarkList = async () => {
     })
 }
 
-const showDrawer = (bookmarkId: number) => {
-  drawerVisible.value = true
-  const bookmarkData = bookmarkList.value.find((item) => {
-    return item.id === bookmarkId
-  })
-  Object.assign(bookmarkInfo, bookmarkData)
+const showDrawer = (bookmarkId: number | undefined) => {
+  if (bookmarkId === undefined) {
+    drawerInfo.drawerTitle = '添加书签'
+  } else {
+    drawerInfo.drawerTitle = '编辑书签'
+    const bookmarkData = bookmarkList.value.find((item) => {
+      return item.id === bookmarkId
+    })
+    Object.assign(bookmarkInfo, bookmarkData)
+  }
+  drawerInfo.drawerVisible = true
 }
 
 const closeDrawer = () => {
-  drawerVisible.value = false
-  console.log('closeDrawer')
+  drawerInfo.drawerVisible = false
+}
+
+const handleSaveEditing = () => {
+  console.log('save')
 }
 
 onMounted(() => {
