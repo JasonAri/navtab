@@ -76,6 +76,19 @@ export const useBookmarkStore = defineStore('bookmark', {
       } catch (error) {
         return Promise.reject(error)
       }
+    },
+    async editBookmarkById(id: number, bookmark: Bookmarks) {
+      try {
+        const idx = this.bookmarkList.findIndex((item) => {
+          return item.id === id
+        })
+        if (idx === -1) return
+        this.bookmarkList.splice(idx, 1, bookmark)
+        const res = await this.saveBookmarkList()
+        return Promise.resolve(res)
+      } catch (error) {
+        return Promise.reject(error)
+      }
     }
   }
 })

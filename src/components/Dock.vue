@@ -40,7 +40,7 @@
       <Button
         style="width: 45%; margin-left: 10%"
         type="primary"
-        @click="handleSaveEditing"
+        @click="handleAddOrSave"
       >
         {{ drawerInfo.drawerTitle === '编辑书签' ? '保存' : '添加' }}
       </Button>
@@ -73,7 +73,12 @@ const bookmarkInfo = reactive<Bookmarks>({
 
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
-const { getBookmarkList, resetBookmarkList, saveBookmarkList } = bookmarkStore
+const {
+  getBookmarkList,
+  resetBookmarkList,
+  saveBookmarkList,
+  editBookmarkById
+} = bookmarkStore
 
 const el = ref()
 useDraggable(el, bookmarkList, {
@@ -128,8 +133,24 @@ const closeDrawer = () => {
   drawerInfo.drawerVisible = false
 }
 
-const handleSaveEditing = () => {
-  console.log('save')
+const handleAddOrSave = async () => {
+  if (drawerInfo.drawerTitle == '添加书签') {
+    // add
+    console.log('add')
+  } else {
+    // edit
+    console.log('edit')
+    await editBookmarkById(bookmarkInfo.id, bookmarkInfo)
+      .then((res) => {
+        console.log(res)
+        message.success('修改成功')
+        closeDrawer()
+      })
+      .catch((err) => {
+        console.error(err)
+        message.error('修改失败，请重试')
+      })
+  }
 }
 
 onMounted(() => {
