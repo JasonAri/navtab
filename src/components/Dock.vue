@@ -62,14 +62,15 @@ const drawerInfo = reactive({
   drawerTitle: '',
   drawerVisible: false
 })
-const bookmarkInfo = reactive<Bookmarks>({
+const defaultBookmarkInfo = {
   id: 0,
   title: 'title',
   imgUrl: 'imgUrl',
   size: 'size',
   href: 'href',
   bgColor: '#fff'
-})
+}
+const bookmarkInfo = reactive({}) as Bookmarks
 
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
@@ -119,6 +120,7 @@ const saveUserBookmarkList = async () => {
 const showDrawer = (bookmarkId: number | undefined) => {
   if (bookmarkId === undefined) {
     drawerInfo.drawerTitle = '添加书签'
+    Object.assign(bookmarkInfo, defaultBookmarkInfo)
   } else {
     drawerInfo.drawerTitle = '编辑书签'
     const bookmarkData = bookmarkList.value.find((item) => {
@@ -142,7 +144,7 @@ const handleAddOrSave = async () => {
     console.log('edit')
     await editBookmarkById(bookmarkInfo.id, bookmarkInfo)
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         message.success('修改成功')
         closeDrawer()
       })
