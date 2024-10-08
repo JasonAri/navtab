@@ -78,12 +78,12 @@ export const useBookmarkStore = defineStore('bookmark', {
       }
     },
     async editBookmarkById(id: number, bookmark: Bookmarks) {
+      console.log('bookmark:', bookmark)
       try {
-        const idx = this.bookmarkList.findIndex((item) => {
-          return item.id === id
-        })
+        const idx = this.bookmarkList.findIndex((item) => item.id === id)
         if (idx === -1) return
-        this.bookmarkList.splice(idx, 1, bookmark)
+        this.bookmarkList[idx] = bookmark
+        console.log(this.bookmarkList)
         const res = await this.saveBookmarkList()
         return Promise.resolve(res)
       } catch (error) {

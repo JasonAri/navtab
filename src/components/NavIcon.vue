@@ -7,7 +7,7 @@
       <div style="position: relative">
         <a class="icon-box" :href="href" :style="{ backgroundColor: bgColor }">
           <img
-            :src="`${imgBaseUrl}/${imgUrl}`"
+            :src="`${imgBaseUrl}${imgUrl}`"
             :style="{ width: `${size}px`, height: `${size}px` }"
             alt=""
           />
@@ -50,7 +50,7 @@ const props = defineProps({
   }
 })
 
-const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images'
+const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images/'
 const emit = defineEmits(['addOrEditBookmark'])
 
 const bookmarkStore = useBookmarkStore()

@@ -37,9 +37,12 @@
         <Input v-model:value="bookmarkInfo.bgColor" />
       </FormItem>
       <div class="favicon-container">
-        <div class="favicon-bg">
+        <div
+          class="favicon-bg"
+          :style="{ backgroundColor: bookmarkInfo.bgColor }"
+        >
           <img
-            src="https://baidu.com/favicon.ico"
+            :src="`${imgBaseUrl}${bookmarkInfo.imgUrl}`"
             alt="baidu.com favicon"
             :style="{
               width: bookmarkInfo.size + 'px',
@@ -61,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, toRaw } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
@@ -76,13 +79,14 @@ const drawerInfo = reactive({
 })
 const defaultBookmarkInfo = {
   id: 0,
-  title: 'title',
-  imgUrl: 'imgUrl',
+  title: 'notion',
+  imgUrl: 'icon-notion.svg',
   size: '48',
-  href: 'href',
+  href: 'https://www.baidu.com/',
   bgColor: '#fff'
 }
 const bookmarkInfo = reactive({}) as Bookmarks
+const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images/'
 
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
@@ -135,10 +139,10 @@ const showDrawer = (bookmarkId: number | undefined) => {
     Object.assign(bookmarkInfo, defaultBookmarkInfo)
   } else {
     drawerInfo.drawerTitle = '编辑书签'
-    const bookmarkData = bookmarkList.value.find((item) => {
-      return item.id === bookmarkId
-    })
-    Object.assign(bookmarkInfo, bookmarkData)
+    const bookmarkData = bookmarkList.value.find(
+      (item) => item.id === bookmarkId
+    )
+    Object.assign(bookmarkInfo, toRaw(bookmarkData))
   }
   drawerInfo.drawerVisible = true
 }
@@ -154,7 +158,7 @@ const handleAddOrSave = async () => {
   } else {
     // edit
     console.log('edit')
-    await editBookmarkById(bookmarkInfo.id, bookmarkInfo)
+    await editBookmarkById(bookmarkInfo.id, { ...bookmarkInfo })
       .then((res) => {
         // console.log(res)
         message.success('修改成功')
@@ -228,7 +232,6 @@ onMounted(() => {
   .favicon-bg {
     width: 60px;
     height: 60px;
-    background-color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
