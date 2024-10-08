@@ -36,6 +36,18 @@
       <FormItem label="背景颜色">
         <Input v-model:value="bookmarkInfo.bgColor" />
       </FormItem>
+      <div class="favicon-container">
+        <div class="favicon-bg">
+          <img
+            src="https://baidu.com/favicon.ico"
+            alt="baidu.com favicon"
+            :style="{
+              width: bookmarkInfo.size + 'px',
+              height: bookmarkInfo.size + 'px'
+            }"
+          />
+        </div>
+      </div>
       <Button style="width: 45%" @click="closeDrawer">取消</Button>
       <Button
         style="width: 45%; margin-left: 10%"
@@ -66,7 +78,7 @@ const defaultBookmarkInfo = {
   id: 0,
   title: 'title',
   imgUrl: 'imgUrl',
-  size: 'size',
+  size: '48',
   href: 'href',
   bgColor: '#fff'
 }
@@ -190,10 +202,6 @@ onMounted(() => {
       justify-content: center;
       align-items: center;
       border-radius: 12px;
-      img {
-        width: 32px;
-        height: 32px;
-      }
     }
   }
 }
@@ -210,6 +218,22 @@ onMounted(() => {
   }
   &:active {
     color: rgba(255, 255, 255, 0.3);
+  }
+}
+.favicon-container {
+  background-color: #eee;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  .favicon-bg {
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    border-radius: 12px;
   }
 }
 </style>
