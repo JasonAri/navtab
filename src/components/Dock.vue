@@ -82,7 +82,7 @@ const defaultBookmarkInfo = {
   title: 'notion',
   imgUrl: 'icon-notion.svg',
   size: '48',
-  href: 'https://www.baidu.com/',
+  href: 'https://www.notion.so/',
   bgColor: '#fff'
 }
 const bookmarkInfo = reactive({}) as Bookmarks
@@ -110,9 +110,7 @@ useDraggable(el, bookmarkList, {
 
 const getUserBookmarkList = async () => {
   await getBookmarkList()
-    .then(() => {
-      // console.log(res)
-    })
+    .then(() => {})
     .catch((err) => {
       console.error(err)
       message.error('获取书签数据失败')
@@ -123,8 +121,7 @@ const getUserBookmarkList = async () => {
 
 const saveUserBookmarkList = async () => {
   await saveBookmarkList()
-    .then((res) => {
-      // console.log(res)
+    .then(() => {
       message.success('同步成功')
     })
     .catch((err) => {
@@ -154,13 +151,10 @@ const closeDrawer = () => {
 const handleAddOrSave = async () => {
   if (drawerInfo.drawerTitle == '添加书签') {
     // add
-    console.log('add')
   } else {
     // edit
-    console.log('edit')
-    await editBookmarkById(bookmarkInfo.id, { ...bookmarkInfo })
-      .then((res) => {
-        // console.log(res)
+    await editBookmarkById(bookmarkInfo.id, toRaw(bookmarkInfo))
+      .then(() => {
         message.success('修改成功')
         closeDrawer()
       })
