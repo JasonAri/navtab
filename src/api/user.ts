@@ -4,7 +4,8 @@ import {
   ResTokens,
   ResBookmarkList,
   Bookmarks,
-  ReqBookmarkListData
+  ReqBookmarkListData,
+  ResUploadImage
 } from './types/user'
 
 export function loginApi(data: ReqUserData) {
@@ -30,8 +31,8 @@ export function setBookmarkListApi(data: ReqBookmarkListData<Bookmarks>) {
   })
 }
 
-export function uploadFileApi(data: FormData) {
-  return request({
+export function uploadImageApi(data: FormData) {
+  return request<ResUploadImage>({
     url: '/upload',
     method: 'post',
     headers: { 'Content-Type': 'multipart/form-data' },

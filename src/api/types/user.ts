@@ -24,3 +24,7 @@ export interface Bookmarks {
 export interface ReqBookmarkListData<T> {
   bookmarkList: Array<T>
 }
+
+export interface ResUploadImage {
+  imagePath: string
+}

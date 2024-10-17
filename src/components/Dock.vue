@@ -27,6 +27,7 @@
       <FormItem label="URL">
         <Input v-model:value="bookmarkInfo.href" />
       </FormItem>
+      <ImageUpload />
       <FormItem label="图标地址">
         <Input v-model:value="bookmarkInfo.imgUrl" />
       </FormItem>
@@ -72,6 +73,7 @@ import { getAccessToken, removeTokens } from '../utils/tools'
 import { message, Drawer, Form, FormItem, Input, Button } from 'ant-design-vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { Bookmarks } from '../api/types/user'
+import ImageUpload from './ImageUpload.vue'
 
 const drawerInfo = reactive({
   drawerTitle: '',
