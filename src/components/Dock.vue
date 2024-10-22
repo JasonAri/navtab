@@ -29,7 +29,7 @@
       </FormItem>
       <ImageUpload />
       <FormItem label="图标地址">
-        <Input v-model:value="bookmarkInfo.imgUrl" />
+        <Input :placeholder="bookmarkInfo.imgUrl" :disabled="true" />
       </FormItem>
       <FormItem label="图标大小 (px)">
         <Input v-model:value="bookmarkInfo.size" />
@@ -88,7 +88,7 @@ const defaultBookmarkInfo = {
   bgColor: '#fff'
 }
 const bookmarkInfo = reactive({}) as Bookmarks
-const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images/'
+const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images'
 
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)

@@ -50,7 +50,7 @@ const props = defineProps({
   }
 })
 
-const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images/'
+const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images'
 const emit = defineEmits(['addOrEditBookmark'])
 
 const bookmarkStore = useBookmarkStore()
