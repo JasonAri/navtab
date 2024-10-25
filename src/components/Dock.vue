@@ -111,14 +111,12 @@ useDraggable(el, bookmarkList, {
 })
 
 const getUserBookmarkList = async () => {
-  await getBookmarkList()
-    .then(() => {})
-    .catch((err) => {
-      console.error(err)
-      message.error('获取书签数据失败')
-      resetBookmarkList()
-      removeTokens()
-    })
+  await getBookmarkList().catch((err) => {
+    console.error(err)
+    message.error('获取书签数据失败')
+    resetBookmarkList()
+    removeTokens()
+  })
 }
 
 const saveUserBookmarkList = async () => {

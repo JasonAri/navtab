@@ -8,28 +8,28 @@ export const useBookmarkStore = defineStore('bookmark', {
       {
         id: 0,
         title: 'notion',
-        imgUrl: 'icon-notion.svg',
+        imgUrl: '/icon-notion.svg',
         size: '48',
         href: 'https://www.notion.so/'
       },
       {
         id: 1,
         title: 'github',
-        imgUrl: 'icon-github.com.svg',
+        imgUrl: '/icon-github.com.svg',
         size: '38',
         href: 'https://github.com/'
       },
       {
         id: 2,
         title: '掘金',
-        imgUrl: 'icon-juejin.cn.svg',
+        imgUrl: '/icon-juejin.cn.svg',
         size: '38',
         href: 'https://juejin.cn/'
       },
       {
         id: 3,
         title: 'bilibili',
-        imgUrl: 'icon-bilibili.svg',
+        imgUrl: '/icon-bilibili.svg',
         size: '48',
         href: 'https://bilibili.com/'
       }
@@ -41,6 +41,7 @@ export const useBookmarkStore = defineStore('bookmark', {
       try {
         const res = await getBookmarkListApi()
         if (res.data.bookmarkList.length > 0) {
+          console.log(res.data)
           this.bookmarkList = res.data.bookmarkList
         } else {
           throw new Error('书签数据错误')
