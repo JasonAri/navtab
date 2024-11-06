@@ -22,20 +22,25 @@
   >
     <Form :model="bookmarkInfo" :label-col="{ style: { width: '100px' } }">
       <FormItem label="书签名">
-        <Input v-model:value="bookmarkInfo.title" />
+        <Input
+          v-model:value="bookmarkInfo.title"
+          placeholder="请输入书签名称"
+        />
       </FormItem>
-      <FormItem label="URL">
-        <Input v-model:value="bookmarkInfo.href" />
-      </FormItem>
-      <ImageUpload />
-      <FormItem label="图标地址">
-        <Input :placeholder="bookmarkInfo.imgUrl" :disabled="true" />
+      <FormItem label="网址">
+        <Input
+          v-model:value="bookmarkInfo.href"
+          placeholder="请输入网站的完整网址"
+        />
       </FormItem>
       <FormItem label="图标大小 (px)">
-        <Input v-model:value="bookmarkInfo.size" />
+        <InputNumber v-model:value="bookmarkInfo.size" :min="1" :step="2" />
       </FormItem>
       <FormItem label="背景颜色">
         <Input v-model:value="bookmarkInfo.bgColor" />
+      </FormItem>
+      <FormItem label="图标地址">
+        <Input :placeholder="bookmarkInfo.imgUrl" :disabled="true" />
       </FormItem>
       <div class="favicon-container">
         <div
@@ -52,13 +57,22 @@
           />
         </div>
       </div>
-      <Button style="width: 45%" @click="closeDrawer">取消</Button>
-      <Button
-        style="width: 45%; margin-left: 10%"
-        type="primary"
-        @click="handleAddOrSave"
-      >
-        {{ drawerInfo.drawerTitle === '编辑书签' ? '保存' : '添加' }}
+      <input
+        type="file"
+        @change="onFileChange"
+        accept="image/*"
+        ref="imgInputRef"
+        style="display: none"
+      />
+      <Button style="width: 45%" @click="handleSelectImage">
+        <UploadOutlined :style="{ display: isUploading ? 'none' : '' }" />
+        <LoadingOutlined :style="{ display: isUploading ? '' : 'none' }" />
+        更改图标
+      </Button>
+      <Button style="width: 45%; margin-left: 10%" @click="handleAddOrSave">
+        <SaveOutlined v-if="drawerInfo.drawerTitle === '编辑书签'" />
+        <FileAddOutlined v-else />
+        {{ drawerInfo.drawerTitle === '编辑书签' ? '保存书签' : '添加书签' }}
       </Button>
     </Form>
   </Drawer>
@@ -70,25 +84,43 @@ import { storeToRefs } from 'pinia'
 import { useBookmarkStore } from '../store/bookmark'
 import NavIcon from './NavIcon.vue'
 import { getAccessToken, removeTokens } from '../utils/tools'
-import { message, Drawer, Form, FormItem, Input, Button } from 'ant-design-vue'
+import {
+  message,
+  Drawer,
+  Form,
+  FormItem,
+  Input,
+  Button,
+  InputNumber
+} from 'ant-design-vue'
+import {
+  UploadOutlined,
+  SaveOutlined,
+  FileAddOutlined,
+  LoadingOutlined
+} from '@ant-design/icons-vue'
 import { useDraggable } from 'vue-draggable-plus'
 import { Bookmarks } from '../api/types/user'
-import ImageUpload from './ImageUpload.vue'
+import { uploadImageApi } from '../api/user'
+import { nanoid } from 'nanoid'
 
 const drawerInfo = reactive({
   drawerTitle: '',
   drawerVisible: false
 })
 const defaultBookmarkInfo = {
-  id: 0,
-  title: 'notion',
-  imgUrl: 'icon-notion.svg',
-  size: '48',
-  href: 'https://www.notion.so/',
+  id: '',
+  title: '',
+  imgUrl: '/icon-default-favicon.png',
+  size: 32,
+  href: '',
   bgColor: '#fff'
 }
 const bookmarkInfo = reactive({}) as Bookmarks
 const imgBaseUrl = import.meta.env.VITE_APP_PROXY_TARGET + '/images'
+const imgInputRef = ref<HTMLInputElement | null>(null)
+const selectedFile = ref<File | null>(null)
+const isUploading = ref(false)
 
 const bookmarkStore = useBookmarkStore()
 const { bookmarkList } = storeToRefs(bookmarkStore)
@@ -96,7 +128,8 @@ const {
   getBookmarkList,
   resetBookmarkList,
   saveBookmarkList,
-  editBookmarkById
+  editBookmarkById,
+  addBookmark
 } = bookmarkStore
 
 const el = ref()
@@ -130,7 +163,7 @@ const saveUserBookmarkList = async () => {
     })
 }
 
-const showDrawer = (bookmarkId: number | undefined) => {
+const showDrawer = (bookmarkId: string | undefined) => {
   if (bookmarkId === undefined) {
     drawerInfo.drawerTitle = '添加书签'
     Object.assign(bookmarkInfo, defaultBookmarkInfo)
@@ -151,6 +184,17 @@ const closeDrawer = () => {
 const handleAddOrSave = async () => {
   if (drawerInfo.drawerTitle == '添加书签') {
     // add
+    bookmarkInfo.id = nanoid()
+    await addBookmark(toRaw(bookmarkInfo))
+      .then((res) => {
+        console.log(res)
+        message.success('添加成功')
+        closeDrawer()
+      })
+      .catch((err) => {
+        console.log(err)
+        message.error('添加失败，请重试')
+      })
   } else {
     // edit
     await editBookmarkById(bookmarkInfo.id, toRaw(bookmarkInfo))
@@ -163,6 +207,49 @@ const handleAddOrSave = async () => {
         message.error('修改失败，请重试')
       })
   }
+}
+
+const handleSelectImage = () => {
+  imgInputRef.value?.click()
+}
+
+const onFileChange = (event: Event) => {
+  console.log('111')
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files.length > 0) {
+    selectedFile.value = target.files[0]
+    // reader
+    // const reader = new FileReader()
+    // reader.onload = (e) => {
+    //   bookmarkInfo.imgUrl = e.target?.result as string
+    //   console.log(e)
+    // }
+    // reader.readAsDataURL(selectedFile.value)
+    console.log('222')
+    uploadImage()
+  }
+}
+
+const uploadImage = async () => {
+  if (!selectedFile.value) return
+  // formData
+  const formData = new FormData()
+  formData.append('image', selectedFile.value)
+  console.log(formData.get('image'))
+  isUploading.value = true
+  // upload
+  try {
+    const res = await uploadImageApi(formData)
+    if (res.code >= 200 && res.code < 300) {
+      console.log(res.data)
+      isUploading.value = false
+      bookmarkInfo.imgUrl = res.data.imagePath
+    }
+  } catch (error) {
+    console.error('Upload Error:', error)
+    isUploading.value = false
+  }
+  imgInputRef.value!.value = ''
 }
 
 onMounted(() => {
@@ -231,6 +318,7 @@ onMounted(() => {
     align-items: center;
     margin: 10px 0;
     border-radius: 12px;
+    // overflow: hidden;
   }
 }
 </style>

@@ -25,7 +25,7 @@ import { message } from 'ant-design-vue'
 
 const props = defineProps({
   id: {
-    type: Number,
+    type: String,
     require: true
   },
   title: {
@@ -37,7 +37,7 @@ const props = defineProps({
     required: true
   },
   size: {
-    type: String,
+    type: Number,
     required: true
   },
   href: {
@@ -65,7 +65,7 @@ const handleMenuSelect = (item: { label: string }) => {
       emit('addOrEditBookmark', props.id)
       break
     case '删除':
-      delBookmarkById(props.id as number)
+      delBookmarkById(props.id as string)
         .then((res) => {
           message.success('删除成功')
         })

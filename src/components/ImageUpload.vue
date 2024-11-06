@@ -1,6 +1,13 @@
 <template>
   <div>
-    <input type="file" @change="onFileChange" accept="image/*" />
+    <input
+      type="file"
+      @change="onFileChange"
+      accept="image/*"
+      ref="fileInputRef"
+      style="display: none"
+    />
+    <button @click="triggerFileInput">上传图标</button>
     <div v-if="imageUrl">
       <h3>预览:</h3>
       <img :src="imageUrl" alt="Image Preview" style="max-width: 100px" />
@@ -19,6 +26,11 @@ import { uploadImageApi } from '../api/user'
 const selectedFile = ref<File | null>(null)
 const imageUrl = ref<string>('')
 const uploadStatus = ref<string>('')
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const triggerFileInput = () => {
+  fileInputRef.value?.click()
+}
 
 const onFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement

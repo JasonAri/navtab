@@ -13,10 +13,10 @@ export interface ResBookmarkList<T> {
 }
 
 export interface Bookmarks {
-  id: number
+  id: string
   title: string
   imgUrl: string
-  size: string
+  size: number
   href: string
   bgColor?: string
 }

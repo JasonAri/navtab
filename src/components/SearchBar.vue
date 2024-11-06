@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="search-bar">
+    <div class="search-bar" ref="searchBarRef">
       <section class="search-engine flex-center">
         <section class="icon-box flex-center">
           <img src="/images/icon-bing-48.png" alt="bing" />
@@ -11,6 +11,8 @@
         placeholder="输入搜索内容"
         v-model:value="searchValue"
         v-on:press-enter="search"
+        @focus="handleInputFocus"
+        @blur="handleInputBlur"
       />
       <section class="clear-icon-box flex-center">
         <CloseCircleFilled
@@ -31,12 +33,19 @@ import { CloseCircleFilled } from '@ant-design/icons-vue'
 let searchValue = ref<string>('')
 
 function search() {
-  // https://cn.bing.com/search?q=%s
   window.location.href = 'https://cn.bing.com/search?q=' + searchValue.value
 }
 
 function clearInput() {
   searchValue.value = ''
+}
+
+const searchBarRef = ref<HTMLInputElement | null>(null)
+let handleInputFocus = () => {
+  searchBarRef.value?.classList.add('search-bar-active')
+}
+let handleInputBlur = () => {
+  searchBarRef.value?.classList.remove('search-bar-active')
 }
 </script>
 
@@ -80,7 +89,8 @@ function clearInput() {
     color: #2d2e2e;
     font-size: 16px;
     line-height: 16px;
-    font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei',sans-serif;
+    font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei',
+      sans-serif;
     border: 0;
     outline: none;
     background: rgba(0, 0, 0, 0);
@@ -94,5 +104,8 @@ function clearInput() {
       color: rgba(0, 0, 0, 0.4);
     }
   }
+}
+.search-bar-active {
+  background-color: #fff;
 }
 </style>

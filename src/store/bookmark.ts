@@ -6,37 +6,41 @@ export const useBookmarkStore = defineStore('bookmark', {
   state: () => ({
     defaultBookmarkList: [
       {
-        id: 0,
+        id: '0',
         title: 'notion',
         imgUrl: '/icon-notion.svg',
-        size: '48',
+        size: 48,
         href: 'https://www.notion.so/'
       },
       {
-        id: 1,
+        id: '1',
         title: 'github',
         imgUrl: '/icon-github.com.svg',
-        size: '38',
+        size: 38,
         href: 'https://github.com/'
       },
       {
-        id: 2,
+        id: '2',
         title: '掘金',
         imgUrl: '/icon-juejin.cn.svg',
-        size: '38',
+        size: 38,
         href: 'https://juejin.cn/'
       },
       {
-        id: 3,
+        id: '3',
         title: 'bilibili',
         imgUrl: '/icon-bilibili.svg',
-        size: '48',
+        size: 48,
         href: 'https://bilibili.com/'
       }
     ],
     bookmarkList: [] as Array<Bookmarks>
   }),
   actions: {
+    resetBookmarkList() {
+      this.bookmarkList = this.defaultBookmarkList
+    },
+
     async getBookmarkList() {
       try {
         const res = await getBookmarkListApi()
@@ -51,9 +55,7 @@ export const useBookmarkStore = defineStore('bookmark', {
         return Promise.reject(error)
       }
     },
-    resetBookmarkList() {
-      this.bookmarkList = this.defaultBookmarkList
-    },
+
     async saveBookmarkList() {
       try {
         const data = { bookmarkList: this.bookmarkList }
@@ -66,7 +68,8 @@ export const useBookmarkStore = defineStore('bookmark', {
         return Promise.reject(error)
       }
     },
-    async delBookmarkById(id: number) {
+
+    async delBookmarkById(id: string) {
       try {
         const newBookmarkList = this.bookmarkList.filter((item) => {
           if (item.id !== id) return item
@@ -78,11 +81,22 @@ export const useBookmarkStore = defineStore('bookmark', {
         return Promise.reject(error)
       }
     },
-    async editBookmarkById(id: number, bookmark: Bookmarks) {
+
+    async editBookmarkById(id: string, bookmark: Bookmarks) {
       try {
         const idx = this.bookmarkList.findIndex((item) => item.id === id)
         if (idx === -1) return
         this.bookmarkList[idx] = { ...bookmark } // shallow copy
+        const res = await this.saveBookmarkList()
+        return Promise.resolve(res)
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+
+    async addBookmark(bookmark: Bookmarks) {
+      try {
+        this.bookmarkList.push({ ...bookmark }) // shallow copy
         const res = await this.saveBookmarkList()
         return Promise.resolve(res)
       } catch (error) {
