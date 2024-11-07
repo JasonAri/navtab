@@ -186,8 +186,7 @@ const handleAddOrSave = async () => {
     // add
     bookmarkInfo.id = nanoid()
     await addBookmark(toRaw(bookmarkInfo))
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         message.success('添加成功')
         closeDrawer()
       })
@@ -214,18 +213,9 @@ const handleSelectImage = () => {
 }
 
 const onFileChange = (event: Event) => {
-  console.log('111')
   const target = event.target as HTMLInputElement
   if (target.files && target.files.length > 0) {
     selectedFile.value = target.files[0]
-    // reader
-    // const reader = new FileReader()
-    // reader.onload = (e) => {
-    //   bookmarkInfo.imgUrl = e.target?.result as string
-    //   console.log(e)
-    // }
-    // reader.readAsDataURL(selectedFile.value)
-    console.log('222')
     uploadImage()
   }
 }

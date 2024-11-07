@@ -66,7 +66,7 @@ const handleMenuSelect = (item: { label: string }) => {
       break
     case '删除':
       delBookmarkById(props.id as string)
-        .then((res) => {
+        .then(() => {
           message.success('删除成功')
         })
         .catch((err) => {
