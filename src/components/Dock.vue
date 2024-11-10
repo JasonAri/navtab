@@ -146,7 +146,7 @@ useDraggable(el, bookmarkList, {
 const getUserBookmarkList = async () => {
   await getBookmarkList().catch((err) => {
     console.error(err)
-    message.error('获取书签数据失败')
+    message.error('获取书签数据失败,请重新登录！')
     resetBookmarkList()
     removeTokens()
   })
@@ -190,8 +190,7 @@ const handleAddOrSave = async () => {
         message.success('添加成功')
         closeDrawer()
       })
-      .catch((err) => {
-        console.log(err)
+      .catch(() => {
         message.error('添加失败，请重试')
       })
   } else {
@@ -201,8 +200,7 @@ const handleAddOrSave = async () => {
         message.success('修改成功')
         closeDrawer()
       })
-      .catch((err) => {
-        console.error(err)
+      .catch(() => {
         message.error('修改失败，请重试')
       })
   }
@@ -225,13 +223,11 @@ const uploadImage = async () => {
   // formData
   const formData = new FormData()
   formData.append('image', selectedFile.value)
-  console.log(formData.get('image'))
   isUploading.value = true
   // upload
   try {
     const res = await uploadImageApi(formData)
     if (res.code >= 200 && res.code < 300) {
-      console.log(res.data)
       isUploading.value = false
       bookmarkInfo.imgUrl = res.data.imagePath
     }

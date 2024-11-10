@@ -100,13 +100,11 @@ const handleRegBtn = async () => {
   regBtnLoading.value = true
 
   await useRegexp(formState)
-    .then((res) => {
-      // console.log(res)
+    .then(() => {
       registerRequest()
     })
     .catch((err: { reason: string }) => {
       regBtnLoading.value = false
-      // console.log(err.reason)
       if (err.reason === 'username') {
         message.error('用户名应由3-15位英文或汉字组成')
         usernameInputShake.value = true
@@ -136,7 +134,6 @@ const registerRequest = async () => {
     password
   })
     .then((res) => {
-      console.log(res)
       message.success('注册成功,自动登录中...')
       setAccessToken(res.data.accessToken)
       setRefreshToken(res.data.refreshToken)
@@ -146,7 +143,6 @@ const registerRequest = async () => {
       }, 1500)
     })
     .catch((err) => {
-      console.log(err.response.data)
       regBtnLoading.value = false
       const resMsgStr = err.response.data.message
       if (resMsgStr?.indexOf('Duplicate entry')) {

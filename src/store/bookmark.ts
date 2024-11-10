@@ -45,7 +45,6 @@ export const useBookmarkStore = defineStore('bookmark', {
       try {
         const res = await getBookmarkListApi()
         if (res.data.bookmarkList.length > 0) {
-          console.log(res.data)
           this.bookmarkList = res.data.bookmarkList
         } else {
           throw new Error('书签数据错误')

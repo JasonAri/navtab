@@ -51,7 +51,7 @@ const handleClick = (e: MouseEvent) => {
 }
 
 watch(isClickOutsite, () => {
-  console.log(isClickOutsite.value)
+  // console.log("🚀 ~ watch ~ isClickOutsite:", isClickOutsite)
 })
 onMounted(() => {
   if (getAccessToken()) {

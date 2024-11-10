@@ -83,7 +83,6 @@ const loginRequest = async () => {
   const { username, password } = formState
   await loginApi({ username, password })
     .then((res) => {
-      // console.log(res)
       message.success('登录成功!')
       loginBtnLoading.value = false
       setAccessToken(res.data.accessToken)
@@ -91,7 +90,6 @@ const loginRequest = async () => {
       router.push('/')
     })
     .catch((err) => {
-      // console.log(err.response.data)
       const resMsgStr = err.response.data.message
       if (resMsgStr.indexOf('Wrong password')) {
         message.error('用户名或密码不正确！请重新输入')
